@@ -1,0 +1,54 @@
+<div class="modal">
+  <div class="modal__wrap">
+    <div class="modal__bg"></div>
+        <div class="modal__wrapText">
+          <form class="modal__form_1">
+            <p class="modal__title">Начинаем поиск</p>
+
+            <div class="modal__block">
+              <label class="modal__label">
+                <span class="modal__subTitle">Твой ник: </span>
+                <input class="modal__input modal__input_name" />
+              </label>
+
+              <label class="modal__label">
+                <span class="modal__subTitle">Игра для поиска: </span>
+                <select class="modal__select">
+                  <!-- Выводим все доступные игры -->
+                  <% Object.keys(gameAll).forEach(function(item){ %>
+                    <option><%- item %></option>
+                  <% }); %>
+                </select>
+              </label>
+
+              <div style="color: #404040;/*! margin-top: 5px; */">
+
+                <p class="modal__subTitle" style="margin-bottom: 5px;">Ищу:</p>
+
+                <!-- Выводим кол-во игроков в команде -->
+                <% Object.keys(gameAll).forEach(function(item){ %>
+                  <label class="modal__label modal__usersMax" data-game="<%- item %>">
+                    <input class="modal__usersMax-input" type="radio" name="iFind" value="team">
+                    <spam>
+                      Команду (на <%- gameAll[item] %> бро)
+                    </spam>
+                  </label>
+                <% }); %>
+
+                <label class="modal__label modal__usersMax-input_disable">
+                  <input class="modal__usersMax-input" name="iFind"
+                  type="radio" value="partner" disabled="true">
+                  Напарник (будет доступна позднее)
+                </label>
+              </div>
+            </div>
+
+            <div class="modal__submitWrap">
+              <span class="modal__submit">Поехали!</span>
+            </div></form>
+
+          <!-- Блок чата -->
+          <div class="modal__form_2"></div>
+        </div>
+    </div>
+</div>
