@@ -128,12 +128,20 @@ nspChat.on("connection", (socket) => {
         let roomsCount = Object.keys(elem["allRooms"]).length;
 
         // Название последней созданной комнаты
-        let roomNameLast, maxUsers;
-        console.log(`Название последней комнаты ${roomNameLast}`);
+        let roomNameLast, roomMaxUsers;
         let roomsMaxUsersCheck = 0;
 
-        if (roomsCount > 0) {roomsMaxUsersCheck = maxUsers < userInfo["usersAmount"]; }
+        if (roomsCount > 0) {
+          roomNameLast = findNameLastRoom(elem);
+          roomMaxUsers = elem["allRooms"][roomNameLast]["maxUsers"];
+          roomsMaxUsersCheck = roomMaxUsers < userInfo["usersAmount"];
 
+          console.log(`
+            Название последней комнаты: ${roomNameLast} \n
+            Массивчик сокетов: ${elem["allRooms"][roomNameLast]["sockets"]} \n
+            maxUsers: ${roomMaxUsers}
+          `);
+        }
 
         if (roomsCount == 0 || roomsMaxUsersCheck < userInfo["usersAmount"]) {
           let roomName = createNameRoom(elem);
@@ -147,28 +155,18 @@ nspChat.on("connection", (socket) => {
           console.log(`Макс. число юзеров ${maxUsers}`);
         }
 
-        else if (elem["allRooms"][roomNameLast]["sockets"].length < maxUsers) {
+        else if (elem["allRooms"][roomNameLast]["sockets"].length < roomMaxUsers) {
           console.log("Последующие пользователи");
-          socket.join(elem["allRooms"][elem["allRooms"].length - 1]);
-          // let roomName = createNameRoom(elem);
-          // createNewRoom(elem, roomName, 3);
-          // addNewUserOnRoom(elem, roomName);
-          // tellAboutNewUser(elem);
+          socket.join(roomNameLast);
+          tellAboutNewUser(elem);
+          addNewUserOnRoom(elem, roomNameLast);
         }
-        // else {
-        //   // Чистим
-        //   elem["sockets"].length = 0;
-        //   elem["sockets"].push(socket.client.id);
-        //
-        //   // Создаем комнату
-        //   let roomName = `${elem["gameName"]}#${socket.client.id}`;
-        //   roomName.replace(" ", "");
-        //   elem["allRooms"].push(roomName);
-        //   socket.join(elem["allRooms"][elem["allRooms"].length - 1]);
-        //
-        //   // При подключении нового клиента к чату, говорим об этом
-        //   tellAboutNewUser(elem);
-        // }
+        else {
+          let roomName = createNameRoom(elem);
+          createNewRoom(elem, roomName, 3);
+          addNewUserOnRoom(elem, roomName);
+          tellAboutNewUser(elem);
+        }
       }
     });
 
