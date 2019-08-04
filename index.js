@@ -16,13 +16,13 @@ app.use("/static", express.static("./sources/static"));
 // Комнаты (правильная структура)
 // "d2@3da@D@2d2d!3": { sockets: [], maxUsers: 5 }
 let socketInRooms = [
-  { gameName: "Dota 2", allRooms: {} },
-  { gameName: "CS Go", allRooms: {} },
-  { gameName: "Lost Castle", allRooms: {} },
-  { gameName: "Castle Crashers", allRooms: {} },
-  { gameName: "Magicka 2", allRooms: {} },
-  { gameName: "Borderlands 2", allRooms: {} },
-  { gameName: "Portal 2", allRooms: {} }
+  { gameName: "Dota 2", allRooms: {}, maxUsersDefault: 5},
+  { gameName: "CS Go", allRooms: {}, maxUsersDefault: 4},
+  { gameName: "Lost Castle", allRooms: {}, maxUsersDefault: 4},
+  { gameName: "Castle Crashers", allRooms: {}, maxUsersDefault: 4},
+  { gameName: "Magicka 2", allRooms: {}, maxUsersDefault: 4},
+  { gameName: "Borderlands 2", allRooms: {}, maxUsersDefault: 2},
+  { gameName: "Portal 2", allRooms: {}, maxUsersDefault: 2}
 ];
 
 // let socketInRooms = [
@@ -37,8 +37,12 @@ let socketInRooms = [
 
 // Cписок игр и число игроков
 let gameAll = {};
+
 Object.keys(socketInRooms).forEach((item)=> {
-  gameAll[socketInRooms[item].gameName] = 3;
+  let gameName = socketInRooms[item]["gameName"],
+    maxUsersDefault = socketInRooms[item]["maxUsersDefault"];
+
+  gameAll[gameName] = maxUsersDefault;
 });
 
 // Главная страница
@@ -66,6 +70,13 @@ nspChat.on("connection", (socket) => {
   let socketInRooms_item;
 
   userInfoPromise.then((userInfo)=> {
+
+    console.log(`
+      "От пользователя: \n
+      ${userInfo["name"]} \n
+      ${userInfo["gameName"]} \n
+      ${userInfo["usersAmount"]}
+    `);
 
 
     // При подключении нового клиента к чату, говорим об этом
@@ -136,16 +147,12 @@ nspChat.on("connection", (socket) => {
           roomMaxUsers = elem["allRooms"][roomNameLast]["maxUsers"];
           roomsMaxUsersCheck = roomMaxUsers < userInfo["usersAmount"];
 
-          console.log(`
-            Название последней комнаты: ${roomNameLast} \n
-            Массивчик сокетов: ${elem["allRooms"][roomNameLast]["sockets"]} \n
-            maxUsers: ${roomMaxUsers}
-          `);
+          console.log(`Проверяем 2 if ${roomsMaxUsersCheck < userInfo["usersAmount"]}`);
         }
 
         if (roomsCount == 0 || roomsMaxUsersCheck < userInfo["usersAmount"]) {
           let roomName = createNameRoom(elem);
-          createNewRoom(elem, roomName, 3);
+          createNewRoom(elem, roomName, userInfo["usersAmount"]);
           addNewUserOnRoom(elem, roomName);
           tellAboutNewUser(elem);
 
@@ -163,7 +170,7 @@ nspChat.on("connection", (socket) => {
         }
         else {
           let roomName = createNameRoom(elem);
-          createNewRoom(elem, roomName, 3);
+          createNewRoom(elem, roomName, userInfo["usersAmount"]);
           addNewUserOnRoom(elem, roomName);
           tellAboutNewUser(elem);
         }

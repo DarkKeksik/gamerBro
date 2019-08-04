@@ -28,7 +28,9 @@
                 <!-- Выводим кол-во игроков в команде -->
                 <% Object.keys(gameAll).forEach(function(item){ %>
                   <label class="modal__label modal__usersMax" data-game="<%- item %>">
-                    <input class="modal__usersMax-input" type="radio" name="iFind" value="team">
+                    <input class="modal__usersMax-input"
+                      type="radio" name="iFind"
+                      value="team">
                     <spam>
                       Команду (на <%- gameAll[item] %> бро)
                     </spam>
