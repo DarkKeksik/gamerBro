@@ -9,7 +9,7 @@ let fs = require("fs"),
     nspAll = [nspChat];
 
 
-server.listen(3000, "192.168.1.104");
+server.listen(3000, "192.168.1.103");
 app.set("view engine", "ejs");
 app.use("/static", express.static("./sources/static"));
 
@@ -58,7 +58,7 @@ nspChat.on("connection", (socket) => {
   });
 
   // Добавляем id сокета в масиив
-  let socketInRooms_item;
+  let socketInRooms_item, userInfo;
 
   userInfoPromise.then((userInfo)=> {
 
@@ -114,8 +114,8 @@ nspChat.on("connection", (socket) => {
 
 
     // Создание имя комнаты
-    let createNameRoom = (elem) => {
-      let roomName = `${elem["gameName"]}#${socket.client.id}`;
+    let createNameRoom = (elem, maxUsers) => {
+      let roomName = `${elem["gameName"]}#${socket.client.id}user${maxUsers}`;
       roomName = roomName.replace(" ", "");
       return roomName;
     }
@@ -132,15 +132,17 @@ nspChat.on("connection", (socket) => {
         // Название последней созданной комнаты
         let roomNameLast, roomMaxUsers;
         let roomsMaxUsersCheck = 0;
+        let roomsMaxUsersFromClient = 0;
 
         if (roomsCount > 0) {
           roomNameLast = findNameLastRoom(elem);
           roomMaxUsers = elem["allRooms"][roomNameLast]["maxUsers"];
           roomsMaxUsersCheck = roomMaxUsers < userInfo["usersAmount"];
+          roomsMaxUsersFromClient = userInfo["usersAmount"] == roomMaxUsers;
         }
 
         if (roomsCount == 0 || roomsMaxUsersCheck) {
-          let roomName = createNameRoom(elem);
+          let roomName = createNameRoom(elem, userInfo["usersAmount"]);
           createNewRoom(elem, roomName, userInfo["usersAmount"]);
           addNewUserOnRoom(elem, roomName);
           tellAboutNewUser(elem);
@@ -156,7 +158,7 @@ nspChat.on("connection", (socket) => {
           addNewUserOnRoom(elem, roomNameLast);
         }
         else {
-          let roomName = createNameRoom(elem);
+          let roomName = createNameRoom(elem, userInfo["usersAmount"]);
           createNewRoom(elem, roomName, userInfo["usersAmount"]);
           addNewUserOnRoom(elem, roomName);
           tellAboutNewUser(elem);
@@ -176,39 +178,37 @@ nspChat.on("connection", (socket) => {
     });
 
 
-  });
+    socket.on("disconnect", (data) => {
 
-  socket.on("disconnect", (data) => {
-    // Ликвидируем предателя
-    let socketId = socket.client.id;
-    socketInRooms.forEach( (item)=> {
-      let allRoomsOnGame = item["allRooms"],
-        allRoomsOnGame_keys = Object.keys(allRoomsOnGame);
+      // Ликвидируем предателя
+      let socketId = socket.client.id;
+      socketInRooms.forEach( (item)=> {
+        let allRoomsOnGame = item["allRooms"],
+          allRoomsOnGame_keys = Object.keys(allRoomsOnGame);
 
-        // Проходим все комнаты для нахождения сокетов
-        allRoomsOnGame_keys.forEach((item)=> {
-          console.log(`item: ${item}`);
-          let allRoomsOnGame_sockets = allRoomsOnGame[item]["sockets"];
-          console.log(`allRoomsOnGame[item]: ${allRoomsOnGame[item]}`);
-          let allRoomsOnGame_socketPosition = allRoomsOnGame_sockets.indexOf(socketId);
+          // Проходим все комнаты для нахождения сокетов
+          allRoomsOnGame_keys.forEach((item)=> {
+            console.log(`item: ${item}`);
+            let allRoomsOnGame_sockets = allRoomsOnGame[item]["sockets"];
+            console.log(`allRoomsOnGame[item]: ${allRoomsOnGame[item]}`);
+            let allRoomsOnGame_socketPosition = allRoomsOnGame_sockets.indexOf(socketId);
 
-          // Удаляем из массива отключившийся сокет
-          if ( allRoomsOnGame_socketPosition > -1 ) {
-            allRoomsOnGame_sockets.splice(allRoomsOnGame_socketPosition, 1);
-            socket.leave(item);
-          }
-        });
+            // Удаляем из массива отключившийся сокет
+            if ( allRoomsOnGame_socketPosition > -1 ) {
+              allRoomsOnGame_sockets.splice(allRoomsOnGame_socketPosition, 1);
+
+              // Говорим об этом членам комнаты
+              nspChat.to(item).emit("disconnectUser", {
+                name: userInfo["name"]
+              });
+
+              socket.leave(item);
+            }
+          });
+      });
+      console.log("Отключились ahegao");
     });
 
-    //   if(socketInRooms_item !== "undefined") {
-    //     let indexId = socketInRooms_item["sockets"].indexOf(socketId);
-    //   }
-    //
-    // // При отключении, выкидывает сокет из массива сокетов комнаты
-    // if (checkRoom) {
-    //   socket.leave(belongRoomName[1]);
-    //   if (indexId >= 0) arr.splice( socketId, 1 );
-    // }
-    console.log("Отключились ahegao");
+
   });
 });

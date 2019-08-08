@@ -63,6 +63,13 @@ $( document ).ready(function() {
     $(`.modal__usersMax[data-game='${optionVal}']`).show();
   });
 
+  // Логика при выборе кого искать (Команду или напарника)
+  $("body").on("click", ".modal__usersMax-item", function() {
+    let activeClass = "modal__usersMax-item_active";
+    $( this ).parent().children(".modal__usersMax-item").removeClass(activeClass);
+    $( this ).addClass(activeClass);
+  });
+
 
   // Логика при скроле
   $( document ).on("scroll", function(event) {

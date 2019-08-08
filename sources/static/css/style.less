@@ -509,7 +509,7 @@ body {
     margin-bottom: 20px;
   }
   &__block {
-    margin-bottom: 8px;
+    margin-bottom: 20px;
   }
   &__label {
     display: block;
@@ -561,7 +561,6 @@ body {
 
   &__submitWrap {
     text-align: center;
-    margin-top: 20px;
   }
 
   &__usersMax {
@@ -579,17 +578,44 @@ body {
     }
   }
 
+  &__usersMax {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    margin-top: 10px;
+    background-color: #404040;
+    border-radius: 5px;
+    overflow: hidden;
+    color: white;
+
+    &-item {
+      text-align: center;
+      padding: 6px 3px;
+      cursor: pointer;
+      transition-duration: .3s;
+
+      &:hover {
+        box-shadow: 0 0 10px #2d2d2d;
+        background-color: #626262;
+      }
+      &_active {
+        background-color: #3da860 !important;
+        box-shadow: #333333 0px 0px 20px inset !important;
+      }
+    }
+  }
+
   &__submit {
     display: inline-block;
-    padding: 8px 25px;
+    padding: 8px 28px;
+    font-size: 17px;
     border-radius: 5px;
-    background-color: #404040;
+    background-color: #444;
     color: white;
     cursor: pointer;
     transition-duration: .3s;
 
     &:hover {
-      background-color: #3da860;
+      background-color: #626262;
     }
   }
 }
@@ -603,12 +629,14 @@ body {
   font-family: "Roboto";
   z-index: 3;
 
-  &__newUser {
+  &__alert {
     margin-bottom: 10px;
     padding: 0 10px;
     font-family: "Roboto";
     font-size: 14px;
-    color: #20604a;
+
+    &_newUser { color: #20604a; }
+    &_disconnectUser { color: #602020; }
   }
   &__item {
     color: @text;

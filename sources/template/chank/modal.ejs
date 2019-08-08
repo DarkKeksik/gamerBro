@@ -27,26 +27,22 @@
 
                 <!-- Выводим кол-во игроков в команде -->
                 <% Object.keys(gameAll).forEach(function(item){ %>
-                  <label class="modal__label modal__usersMax" data-game="<%- item %>">
-                    <input class="modal__usersMax-input"
-                      type="radio" name="iFind"
-                      value="team" data-amount="<%- gameAll[item] %>">
-                    <spam>
-                      Команду (на <%- gameAll[item] %> бро)
-                    </spam>
-                  </label>
-                <% }); %>
+                  <div class="modal__usersMax" data-game="<%- item %>">
+                    <p class="modal__usersMax-item modal__usersMax-item_active"
+                      data-amount="<%- gameAll[item] %>" title="Команда из <%- gameAll[item] %> бро">
+                      Команду
+                    </p>
 
-                <label class="modal__label modal__usersMax-input_disable">
-                  <input class="modal__usersMax-input" name="iFind"
-                  type="radio" value="partner" disabled="true">
-                  Напарник (будет доступна позднее)
-                </label>
+                    <p class="modal__usersMax-item" data-amount="2" title="Поиск напарника">
+                      Напарника
+                    </p>
+                  </div>
+                <% }); %>
               </div>
             </div>
 
             <div class="modal__submitWrap">
-              <span class="modal__submit">Поехали!</span>
+              <span class="modal__submit">Начать поиск</span>
             </div></form>
 
           <!-- Блок чата -->

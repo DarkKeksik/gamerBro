@@ -468,7 +468,7 @@ body {
   margin-bottom: 20px;
 }
 .modal__block {
-  margin-bottom: 8px;
+  margin-bottom: 20px;
 }
 .modal__label {
   display: block;
@@ -519,7 +519,6 @@ body {
 }
 .modal__submitWrap {
   text-align: center;
-  margin-top: 20px;
 }
 .modal__usersMax {
   display: none;
@@ -535,17 +534,41 @@ body {
   background-color: #ffdbdb;
   cursor: no-drop;
 }
+.modal__usersMax {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  margin-top: 10px;
+  background-color: #404040;
+  border-radius: 5px;
+  overflow: hidden;
+  color: white;
+}
+.modal__usersMax-item {
+  text-align: center;
+  padding: 6px 3px;
+  cursor: pointer;
+  transition-duration: .3s;
+}
+.modal__usersMax-item:hover {
+  box-shadow: 0 0 10px #2d2d2d;
+  background-color: #626262;
+}
+.modal__usersMax-item_active {
+  background-color: #3da860 !important;
+  box-shadow: #333333 0px 0px 20px inset !important;
+}
 .modal__submit {
   display: inline-block;
-  padding: 8px 25px;
+  padding: 8px 28px;
+  font-size: 17px;
   border-radius: 5px;
-  background-color: #404040;
+  background-color: #444;
   color: white;
   cursor: pointer;
   transition-duration: .3s;
 }
 .modal__submit:hover {
-  background-color: #3da860;
+  background-color: #626262;
 }
 .modalChat {
   display: none;
@@ -555,12 +578,17 @@ body {
   font-family: "Roboto";
   z-index: 3;
 }
-.modalChat__newUser {
+.modalChat__alert {
   margin-bottom: 10px;
   padding: 0 10px;
   font-family: "Roboto";
   font-size: 14px;
+}
+.modalChat__alert_newUser {
   color: #20604a;
+}
+.modalChat__alert_disconnectUser {
+  color: #602020;
 }
 .modalChat__item {
   color: #363636;

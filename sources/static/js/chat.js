@@ -8,7 +8,7 @@ $( () => {
 
       let nick = $(".modal__input_name").val(),
           game = $(".modal__select").val(),
-          usersAmount = $(".modal__usersMax:visible input:checked").data("amount");
+          usersAmount = $(".modal__usersMax:visible .modal__usersMax-item_active").data("amount");
 
       // Подписываем на пространство имен "чат"
       nspGame = io('/chat');
@@ -44,7 +44,13 @@ $( () => {
 
     nspGame.on("connectNewUser", (data) => {
       $(".modalChat__textMes").append(`
-        <p class="modalChat__newUser">Подключился ${data.name}</p>
+        <p class="modalChat__alert modalChat__alert_newUser">Подключился ${data.name}</p>
+      `);
+    });
+
+    nspGame.on("disconnectUser", (data) => {
+      $(".modalChat__textMes").append(`
+        <p class="modalChat__alert modalChat__alert_disconnectUser">Отключился ${data.name}</p>
       `);
     });
 
