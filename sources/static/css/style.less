@@ -526,12 +526,14 @@ body {
     font-size: 16px;
     color: #3b3b3b;
     letter-spacing: 1px;
+      &:focus{ outline: none; }
   }
   &__select {
     border: 0;
     border-bottom: 1px solid gray;
-    font-size: 16px;
+    font-size: 1rem;
     color: #404040;
+    &:focus{ outline: none; }
   }
   &__wrap {
     display: flex;
@@ -550,10 +552,9 @@ body {
   }
   &__wrapText {
     min-width: 300px;
-    min-height: 100px;
     max-width: 1024px;
     padding: 20px;
-    border-radius: 10px;
+    border-radius: 5px;
     background-color: white;
     box-shadow: 0 0 7px #272727;
     z-index: 3;

@@ -9,7 +9,7 @@ let fs = require("fs"),
 nspAll = [nspChat];
 
 
-server.listen(3000, "192.168.1.102");
+server.listen(3000, "172.31.45.177");
 app.set("view engine", "ejs");
 app.use("/static", express.static("./sources/static"));
 
@@ -75,7 +75,7 @@ app.get("/", (req, res) => {
 
 // При подключении клиента
 nspChat.on("connection", (socket) => {
-    console.log("Успешно подключились");
+    console.log("Успешно подключились !!!");
     console.log(Object.keys(nspChat.connected));
 
     // Получаем информацию о пользователе от клиента
@@ -90,12 +90,12 @@ nspChat.on("connection", (socket) => {
 
     userInfoPromise.then((userInfo) => {
 
-        console.log(`
-      "От пользователя: \n
-      ${userInfo["name"]} \n
-      ${userInfo["gameName"]} \n
-      ${userInfo["usersAmount"]}
-    `);
+//        console.log(`
+//      "От пользователя: \n
+//      ${userInfo["name"]} \n
+//      ${userInfo["gameName"]} \n
+//      ${userInfo["usersAmount"]}
+//    `);
 
 
         // При подключении нового клиента к чату, говорим об этом
@@ -108,20 +108,54 @@ nspChat.on("connection", (socket) => {
                 name: userInfo["name"]
             });
         };
+        
+        // Находим все комнаты с определенным кол-вом пользователей
+        let findAllRooms = (elem, maxUsers) => {
+            let resultArr = [];
+            Object.keys(elem["allRooms"]).forEach((item) => {                
+                var maxUsersChech = socketInRooms[0]["allRooms"][item]["maxUsers"];
+                if (maxUsersChech == maxUsers) {
+                    resultArr.push(item);
+                }
+            });
+            
+            return resultArr;
+        }
 
 
         // Узнаем название последней созданной комнаты
-        let findNameLastRoom = (elem) => {
-            let roomNameLastIndex = Object.keys(elem["allRooms"]).length - 1,
-                roomNameLastKey = Object.keys(elem["allRooms"])[roomNameLastIndex];
+        let findNameLastRoom = (elem, maxUsers) => {
+            
+            let roomsMaxUsersValid = [];
+            socketInRooms.forEach((elemAllRooms) => {
+                let allRooms = Object.keys(elemAllRooms["allRooms"]);
 
+                allRooms.forEach((elemNameRoom) => {
+                    let itemRoom = elemAllRooms["allRooms"][elemNameRoom];
+                    let itemRoomMaxUsers = elemAllRooms["allRooms"][elemNameRoom]["maxUsers"];
+                    
+//                    console.log(`Тестируем последную найденную комнату ${elemNameRoom} (в цикле)`);
+//                    console.log(`Тестируем последную найденную комнату ${maxUsers} (максимальное кол-во пользователей данные от пользователя)`);
+//                    console.log(`Тестируем последную найденную комнату ${itemRoomMaxUsers} (максимальное кол-во пользователей данные от сервера)`);
+                    if (itemRoomMaxUsers == maxUsers) {
+                        console.log(`Тестируем последную найденную комнату ${elemNameRoom} (в логике)`);
+                        roomsMaxUsersValid.push(elemNameRoom);
+                    }
+                });
+            });
+            
+            // Из полученного массива комнат, получаем последний
+            let roomNameLastKey = roomsMaxUsersValid[Object.keys(roomsMaxUsersValid).length-1];
+//            console.log(`Тестируем последную найденную комнату ${roomsMaxUsersValid} (в массиве)`);
+//            console.log(`Тестируем последную найденную комнату ${roomNameLastKey} (в результате)`);
             return roomNameLastKey;
         }
 
 
-        // Добавление нового сокета в комнату
-        let addNewUserOnRoom = (elem, roomName) => {
-            let roomNameLast = findNameLastRoom(elem),
+        // Добавление нового пользователя в комнату
+        let addNewUserOnRoom = (elem, roomName, maxUsers) => {
+            let maxUsersInsideFunc = maxUsers;
+            let roomNameLast = findNameLastRoom(elem, maxUsersInsideFunc),
                 checkQuantity = elem["allRooms"][roomNameLast]["sockets"];
 
             if (checkQuantity) {
@@ -129,7 +163,7 @@ nspChat.on("connection", (socket) => {
                 let indexLast = Object.keys(elem.allRooms).length - 1,
                     elemRoomName = Object.keys(elem.allRooms)[indexLast];
 
-                console.log(`Добавляем в комнату: ${elemRoomName}`);
+//                console.log(`Добавляем в комнату: ${elemRoomName}`);
                 socket.join(elemRoomName);
             }
         };
@@ -141,6 +175,7 @@ nspChat.on("connection", (socket) => {
                 sockets: [],
                 maxUsers: maxUsers
             }
+            console.log(`Проверяем кол-во человек в комнате ${maxUsers}`);
         }
 
 
@@ -154,46 +189,43 @@ nspChat.on("connection", (socket) => {
 
         // Логика добавления в комнату
         socketInRooms.forEach((elem) => {
+            
+            // Если название игры совпадает, то продолжаем
             if (elem["gameName"] == userInfo["gameName"]) {
                 socketInRooms_item = elem;
 
-                // Создаем комнаты
-                let roomsCount = Object.keys(elem["allRooms"]).length;
-                let roomNotExist = true;
+                // Кол-во раннее созданных комнат
+                let roomsCount = findAllRooms(elem, userInfo["usersAmount"]).length;
 
                 // Название последней созданной комнаты
                 let roomNameLast, roomMaxUsers, roomsMaxUsersCheck;
 
+                // Создаем комнаты
                 if (roomsCount > 0) {
-                    roomNameLast = findNameLastRoom(elem);
-                    roomMaxUsers = elem["allRooms"][roomNameLast]["maxUsers"];
+                    roomNameLast = findNameLastRoom(elem, userInfo["usersAmount"]);
+                    roomMaxUsers = elem["allRooms"][roomNameLast]["maxUsers"];                    
                     roomsMaxUsersCheck = roomMaxUsers != userInfo["usersAmount"];
-                    
-                    // Если ранее была созданна комната, то присоединяемся к ней, иначе создаем
-                    let roomsKeys = Object.keys(elem["allRooms"]);
-                    elem["allRooms"].forEach((elem)=> {
-                        console.log(`Проверка комнат: ${elem}`);
-                    });
                 }
-
-
-                if (roomsCount == 0 || roomsMaxUsersCheck && roomNotExist) {
+                
+                if (roomsCount == 0 || roomsMaxUsersCheck) {
                     let roomName = createNameRoom(elem, userInfo["usersAmount"]);
                     createNewRoom(elem, roomName, userInfo["usersAmount"]);
-                    addNewUserOnRoom(elem, roomName);
+                    addNewUserOnRoom(elem, roomName, userInfo["usersAmount"]);
                     tellAboutNewUser(elem);
 
                     // Для последующих пользователей
-                    roomNameLast = findNameLastRoom(elem);
-                    maxUsers = elem["allRooms"][roomNameLast]["maxUsers"];
-                } else if (elem["allRooms"][roomNameLast]["sockets"].length < roomMaxUsers) {
+//                    maxUsers = elem["allRooms"][roomNameLast]["maxUsers"];
+                }
+                
+                // Тут ошибка
+                else if (elem["allRooms"][roomNameLast]["sockets"].length < roomMaxUsers) {
                     socket.join(roomNameLast);
                     tellAboutNewUser(elem);
-                    addNewUserOnRoom(elem, roomNameLast);
+                    addNewUserOnRoom(elem, roomNameLast, userInfo["usersAmount"]);
                 } else {
                     let roomName = createNameRoom(elem, userInfo["usersAmount"]);
                     createNewRoom(elem, roomName, userInfo["usersAmount"]);
-                    addNewUserOnRoom(elem, roomName);
+                    addNewUserOnRoom(elem, roomName, userInfo["usersAmount"]);
                     tellAboutNewUser(elem);
                 }
             }
