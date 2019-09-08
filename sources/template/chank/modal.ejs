@@ -1,55 +1,60 @@
 <div class="modal">
-  <span class="modal__wrap">
-    <div class="modal__bg"></div>
-        <span class="modal__wrapText">
-            <div class="modal__wrapText__closeBtnWrap">
-              <span class="modal__wrapText__closeBtnWrap__closeBtn" id="modalClose" title="Закрыть">X</span>
+    <div class="modal__wrap">
+        <div class="modal__bg"></div>
+        <div class="modal__wrapText">
+           
+            <!-- Панель для разных кнопок, свернуть, закрыть и т.д -->
+            <div class="modal__panel">
+                <span class="modal__close" id="modalClose" title="Закрыть">X</span>
             </div>
-          <form class="modal__form_1">
-            <p class="modal__title">Начинаем поиск</p>
+            
+            <form class="modal__form_1">
+                <p class="modal__title">Начинаем поиск</p>
 
-            <div class="modal__block">
-              <label class="modal__label">
-                <span class="modal__subTitle">Твой ник: </span>
-                <input class="modal__input modal__input_name" />
-              </label>
+                <div class="modal__block">
+                    <label class="modal__label">
+                        <span class="modal__subTitle">Твой ник: </span>
+                        <input class="modal__input modal__input_name" />
+                    </label>
 
-              <label class="modal__label">
-                <span class="modal__subTitle">Игра для поиска: </span>
-                <select class="modal__select">
-                  <!-- Выводим все доступные игры -->
-                  <% Object.keys(gameAll).forEach(function(item){ %>
-                    <option><%- item %></option>
-                  <% }); %>
-                </select>
-              </label>
+                    <label class="modal__label">
+                        <span class="modal__subTitle">Игра для поиска: </span>
+                        <select class="modal__select">
+                            <!-- Выводим все доступные игры -->
+                            <% Object.keys(gameAll).forEach(function(item){ %>
+                            <option>
+                                <%- item %>
+                            </option>
+                            <% }); %>
+                        </select>
+                    </label>
 
-              <div style="color: #404040;/*! margin-top: 5px; */">
+                    <div>
+                       
+                        <p class="modal__subTitle" style="margin-bottom: 5px;">Ищу:</p>
+                        
+                        <!-- Выводим кол-во игроков в команде -->
+                        <% Object.keys(gameAll).forEach(function(item){ %>
+                        <div class="modal__usersMax" data-game="<%- item %>">
+                            <p class="modal__usersMax-item modal__usersMax-item_active" data-amount="<%- gameAll[item] %>" title="Команда из <%- gameAll[item] %> бро">
+                                Команду
+                            </p>
 
-                <p class="modal__subTitle" style="margin-bottom: 5px;">Ищу:</p>
+                            <p class="modal__usersMax-item" data-amount="2" title="Поиск напарника">
+                                Напарника
+                            </p>
+                        </div>
+                        <% }); %>
+                    </div>
+                </div>
 
-                <!-- Выводим кол-во игроков в команде -->
-                <% Object.keys(gameAll).forEach(function(item){ %>
-                  <div class="modal__usersMax" data-game="<%- item %>">
-                    <p class="modal__usersMax-item modal__usersMax-item_active"
-                      data-amount="<%- gameAll[item] %>" title="Команда из <%- gameAll[item] %> бро">
-                      Команду
-                    </p>
+                <div class="modal__submitWrap">
+                    <span class="modal__submit">Начать поиск</span>
+                </div>
+            </form>
 
-                    <p class="modal__usersMax-item" data-amount="2" title="Поиск напарника">
-                      Напарника
-                    </p>
-                  </div>
-                <% }); %>
-              </div>
-            </div>
-
-            <div class="modal__submitWrap">
-              <span class="modal__submit">Начать поиск</span>
-            </div></form>
-
-          <!-- Блок чата -->
-          <div class="modal__form_2"></div>
+            <!-- Блок чата -->
+            <div class="modal__form_2"></div>
         </div>
     </div>
 </div>

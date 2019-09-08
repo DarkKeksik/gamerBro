@@ -499,6 +499,15 @@ body {
   z-index: 3;
   font-family: "Roboto";
 
+  &__panel {
+    text-align: right;    
+  }
+  &__close {
+    position: relative;
+    top: -15px;
+    cursor: pointer;
+  }
+    
   &__title {
     text-align: center;
     font-size: 18px;
@@ -558,16 +567,6 @@ body {
     background-color: white;
     box-shadow: 0 0 7px #272727;
     z-index: 3;
-
-    &__closeBtnWrap {
-      text-align: right;
-
-      &__closeBtn {
-        position: relative;
-        top: -15px;
-        cursor: pointer;
-      }
-    }
   }
 
   &__submitWrap {
