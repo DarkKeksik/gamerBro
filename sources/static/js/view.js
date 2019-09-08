@@ -143,4 +143,12 @@ $( document ).ready(function() {
     };
     $(".s-preview").css('background-image', 'url(' + arrBG[gameName] + ')');
   });
+
+  const modalCloseButton = document.getElementById('modalClose');
+
+  if (modalCloseButton) {
+    modalCloseButton.onclick = () => {
+      document.getElementsByClassName('modal')[0].style.display = 'none';
+    };
+  }
 });
