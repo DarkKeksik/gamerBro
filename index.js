@@ -13,7 +13,7 @@ server.listen(3000, "172.31.45.177");
 app.set("view engine", "ejs");
 app.use("/static", express.static("./sources/static"));
 
-// Комнаты (правильная структура)
+// Комнаты (правильная структура) 
 // "d2@3da@D@2d2d!3": { sockets: [], maxUsers: 5 }
 let socketInRooms = [
     {
@@ -99,7 +99,7 @@ nspChat.on("connection", (socket) => {
 
 
         // При подключении нового клиента к чату, говорим об этом
-        let tellAboutNewUser = (elem, maxUsers) => {
+        let tellAboutNewUser = (maxUsers) => {
             
             let roomNameLast = findNameLastRoom(maxUsers);
             nspChat.to( roomNameLast ).emit("connectNewUser", {
@@ -107,12 +107,14 @@ nspChat.on("connection", (socket) => {
             });
         };
         
-        // Находим все комнаты с определенным max кол-вом пользователей
+        // Находим все комнаты с определенным кол-вом пользователей 
         let findAllRooms = (elem, maxUsers) => {
             let resultArr = [];
-            Object.keys(elem["allRooms"]).forEach((item) => {                
-                var maxUsersChech = socketInRooms[0]["allRooms"][item]["maxUsers"];
-                if (maxUsersChech == maxUsers) {
+
+            Object.keys(elem["allRooms"]).forEach((item) => {
+                console.log("test", item);
+                var maxUsersCheck = elem["allRooms"][item]["maxUsers"];
+                if (maxUsersCheck == maxUsers) {
                     resultArr.push(item);
                 }
             });
@@ -140,26 +142,24 @@ nspChat.on("connection", (socket) => {
             
             // Из полученного массива комнат, получаем последний
             let roomNameLastKey = roomsMaxUsersValid[Object.keys(roomsMaxUsersValid).length-1];
-//            console.log(`Тестируем последную найденную комнату ${roomsMaxUsersValid} (в массиве)`);
-//            console.log(`Тестируем последную найденную комнату ${roomNameLastKey} (в результате)`);
             return roomNameLastKey;
         }
 
 
         // Добавление нового пользователя в комнату
-        let addNewUserOnRoom = (elem, roomName, maxUsers) => {
-            let maxUsersInsideFunc = maxUsers;
-            let roomNameLast = findNameLastRoom(maxUsersInsideFunc),
-                checkQuantity = elem["allRooms"][roomNameLast]["sockets"];
+        let addNewUserOnRoom = (elem, maxUsers) => {
+            let maxUsersInside = maxUsers;
+            let roomNameLast = findNameLastRoom(maxUsersInside);
+//                checkQuantity = elem["allRooms"][roomNameLast]["sockets"]; 
 
-            if (checkQuantity) {
-                elem["allRooms"][roomName]["sockets"].push(socket.client.id);
-                let indexLast = Object.keys(elem.allRooms).length - 1,
-                    elemRoomName = Object.keys(elem.allRooms)[indexLast];
+//            if (checkQuantity) {
+            elem["allRooms"][roomNameLast]["sockets"].push(socket.client.id);
+//            let indexLast = Object.keys(elem.allRooms).length - 1,
+//                elemRoomName = Object.keys(elem.allRooms)[indexLast];
 
-//                console.log(`Добавляем в комнату: ${elemRoomName}`);
-                socket.join(elemRoomName);
-            }
+    //                console.log(`Добавляем в комнату: ${elemRoomName}`);
+            socket.join(roomNameLast);
+//            }
         };
 
 
@@ -191,7 +191,7 @@ nspChat.on("connection", (socket) => {
                 // Кол-во раннее созданных комнат
                 let roomsCount = findAllRooms(elem, userInfo["usersAmount"]).length;
 
-                // Название последней созданной комнаты
+                // Название последней созданной комнаты 
                 let roomNameLast, roomMaxUsers, roomsMaxUsersCheck;
 
                 // Создаем комнаты 
@@ -204,30 +204,52 @@ nspChat.on("connection", (socket) => {
                 if (roomsCount == 0 || roomsMaxUsersCheck) {
                     let roomName = createNameRoom(elem, userInfo["usersAmount"]);
                     createNewRoom(elem, roomName, userInfo["usersAmount"]);
-                    addNewUserOnRoom(elem, roomName, userInfo["usersAmount"]);
-                    tellAboutNewUser(elem, userInfo["usersAmount"]);
-
-                    // Для последующих пользователей
-//                    maxUsers = elem["allRooms"][roomNameLast]["maxUsers"];
+                    addNewUserOnRoom(elem, userInfo["usersAmount"]);
+                    tellAboutNewUser(userInfo["usersAmount"]);
                 }
-                
                 else if (elem["allRooms"][roomNameLast]["sockets"].length < roomMaxUsers) {
-                    socket.join(roomNameLast);
-                    tellAboutNewUser(elem, userInfo["usersAmount"]);
-                    addNewUserOnRoom(elem, roomNameLast, userInfo["usersAmount"]);
+//                    socket.join(roomNameLast);
+                    addNewUserOnRoom(elem, userInfo["usersAmount"]);
+                    tellAboutNewUser(userInfo["usersAmount"]);
                 } else {
                     let roomName = createNameRoom(elem, userInfo["usersAmount"]);
                     createNewRoom(elem, roomName, userInfo["usersAmount"]);
-                    addNewUserOnRoom(elem, roomName, userInfo["usersAmount"]);
-                    tellAboutNewUser(elem, userInfo["usersAmount"]);
+                    addNewUserOnRoom(elem, userInfo["usersAmount"]);
+                    tellAboutNewUser(userInfo["usersAmount"]);
                 }
             }
         });
+        
+        // Отправляем сообщение всем пользователям в комнате
+        let sentMessage = (socketId) => {
+            // Сюда результат
+            let roomName;
+            
+            socketInRooms.forEach((elemAllRooms) => {
+                let allRooms = Object.keys(elemAllRooms["allRooms"]);
+
+                allRooms.forEach((elemNameRoom) => {
+                    let itemRoom = elemAllRooms["allRooms"][elemNameRoom];
+                    let itemRoomSockets = elemAllRooms["allRooms"][elemNameRoom]["sockets"];
+                    
+                    // Находим первую принадлежность сокета к комнате
+                    itemRoomSockets.forEach((socketItem) => {
+                        if ( socketItem == socketId ) {
+                            roomName = elemNameRoom;
+                        }
+                    });
+                });
+            });
+            
+            console.log("Результат ", roomName);
+            return roomName;
+        }
 
         // Клиент -> сервер
-        socket.on("send mess", (data) => {
-            let belongRoomName = findNameLastRoom(userInfo["usersAmount"]);
-            console.log(belongRoomName);
+        socket.on("send mess", (data) => {            
+            let belongRoomName = sentMessage(socket.client.id);
+            console.log("Id сокета ", socket.client.id);
+            console.log("Отправляем в комнату: ", belongRoomName );
             // Сервер -> клиент
             nspChat.to(belongRoomName).emit("add mess", {
                 name: userInfo["name"],

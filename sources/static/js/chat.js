@@ -38,6 +38,7 @@ $( () => {
       nspGame.emit("send mess", userMsg);
       $(".modalChat__panelMes").text("");
     });
+      
     $("body").on("keydown", ".modalChat__panelSub", function(event) {
       window.test = event;
     });
