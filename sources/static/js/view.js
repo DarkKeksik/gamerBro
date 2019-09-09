@@ -148,7 +148,8 @@ $( document ).ready(function() {
 
   if (modalCloseButton) {
     modalCloseButton.onclick = () => {
-      document.getElementsByClassName('modal')[0].style.display = 'none';
+      let modal = document.getElementsByClassName('modal')[0];
+      modal.style.display = 'none';
     };
   }
 });
