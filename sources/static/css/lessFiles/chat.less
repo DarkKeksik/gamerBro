@@ -1,0 +1,113 @@
+// modal chat
+.modalChat {
+  display: none;
+  position: fixed;
+  height: 100vh;
+  width: 100%;
+  font-family: "Roboto";
+  z-index: 3;
+
+  &__alert {
+    margin-bottom: 10px;
+    padding: 0 10px;
+    font-family: "Roboto";
+    font-size: 14px;
+
+    &_newUser { color: #20604a; }
+    &_disconnectUser { color: #602020; }
+  }
+  &__item {
+    color: @text;
+    margin-bottom: 10px;
+    background-color: #ededed;
+    padding: 5px 10px;
+    border-radius: 5px;
+  }
+  &__name {
+    font-size: 14px;
+    display: block;
+    margin-bottom: 3px;
+    font-weight: 700;
+  }
+
+  &__title {
+    display: inline-block;
+    margin-bottom: 16px;
+    color: @text;
+  }
+  &__userpanel {
+    display: inline-block;
+    float: right;
+    font-size: 20px;
+    cursor: default;
+
+    &-icon {
+      display: inline-block;
+      margin: 0 5px;
+      cursor: pointer;
+      transition-duration: .3s;
+      &:hover {
+        opacity: .7;
+        transform: scale(1.2);
+      }
+    }
+  }
+  &__wrap {
+    width: 100%;
+    height: 100%;
+  }
+  &__bg {
+    position:absolute;
+    top: 0;
+    background-color: #FFF;
+    width: 100%;
+    height: 100%;
+  }
+  &__text {
+    position: relative;
+    margin: 0 auto;
+    padding: 32px 0 0 0;
+    height: 85vh;
+    max-width: 1024px;
+    box-sizing: border-box;
+  }
+  &__textMes {
+    overflow-y: auto;
+    height: 93%;
+  }
+  &__panel {
+    margin: 0 auto;
+    padding-bottom: 3px;
+    height: 15vh;
+    max-width: 1024px;
+    position: relative;
+    box-sizing: border-box;
+    padding: 5px 0;
+    &Mes {
+      height: 100%;
+      width: 100%;
+      border: 1px solid #b6b6b6;
+      border-radius: 5px;
+      padding: 10px 105px 10px 10px;
+      box-sizing: border-box;
+    }
+    &Sub {
+      display: inline-block;
+      position: absolute;
+      top: 40px;
+      right: 15px;
+      padding: 14px;
+      background-color: #232323;
+      color: white;
+      font-size: 25px;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      border-radius: 100%;
+      cursor: pointer;
+      transition-duration: .3s;
+      &:hover {
+        opacity: .7;
+      }
+    }
+  }
+}

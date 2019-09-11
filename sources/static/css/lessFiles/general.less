@@ -1,0 +1,98 @@
+* { margin: 0; padding: 0 }
+
+a {
+  text-decoration: none;
+  cursor: pointer;
+}
+
+// Стилизация скроллбара
+html { scrollbar-color: #151515 #232323; }
+
+.weight { font-weight: 700; }
+body { margin:0; }
+
+// Стили под particles
+#particles-js {
+  height: 99%;
+  width: 100%;
+  position: absolute;
+  top: 0;
+}
+.menu {
+  position: fixed;
+  width: 100%;
+  background-color: #232323;
+  z-index: 2;
+  box-shadow: 0 0 10px #000;
+  transition-duration: .3s;
+  z-index: 3;
+
+  &__scroll {
+    opacity: 0.9;
+    &:hover { opacity: 1; }
+  }
+  &__globWrap {
+    max-width: 1024px;
+    margin: 0 auto;
+  }
+  &__logo {
+    display: inline-block;
+    height: 80px;
+    width: 80px;
+    vertical-align: top;
+    background-color: white;
+    background-image: url("../img/logoV1.jpg");
+    background-size: contain;
+    background-position: center center;
+    transition-duration: .3s;
+    background-repeat: no-repeat;
+
+    &_scroll {
+      height: 55px;
+      width: 55px;
+    }
+  }
+  &__wrap {
+    display: inline-block;
+    float: right;
+  }
+  &__item {
+    position: relative;
+    display: inline-block;
+    padding: 32px 14px;
+    min-width: 50px;
+    font-size: 14px;
+    letter-spacing: 1px;
+    font-family: "Roboto";
+    text-decoration: none;
+    color: white;
+    text-transform: uppercase;
+    transition-duration: .3s;
+    text-align: center;
+    overflow: hidden;
+    vertical-align: top;
+    &_scroll {
+      padding: 20px 5px;
+    }
+    &_active {
+      background-color: #363636;
+    }
+
+    &:hover { background-color: #626262; }
+    &:hover .menu__icon {
+      bottom: 5px;
+    }
+
+    .icon-star-full {
+      color: #e6dd4c;
+    }
+  }
+  &__icon {
+    position: absolute;
+    left: 0;
+    bottom: -20px;
+    width: 100%;
+    font-size: 18px;
+    transition-duration: .3s;
+  }
+}
