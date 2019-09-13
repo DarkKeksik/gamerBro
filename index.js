@@ -73,6 +73,23 @@ app.get("/", (req, res) => {
 });
 
 
+// Функции
+// Для проверки от xxs
+let protectedXXS = (string) => {
+    let htmlEscapes = {
+        '&': ' ',
+        '<': ' ',
+        '>': ' ',
+        '"': ' ',
+        "'": " "
+    };
+
+    return string.replace(/[&<>"']/g, (match) => {
+        return htmlEscapes[match];
+    });
+};
+
+
 // При подключении клиента
 nspChat.on("connection", (socket) => {
     console.log("Успешно подключились !");
@@ -233,10 +250,13 @@ nspChat.on("connection", (socket) => {
             let belongRoomName = sentMessage(socket.client.id);
             console.log("Id сокета ", socket.client.id);
             console.log("Отправляем в комнату: ", belongRoomName );
+            
+            let dataClear = protectedXXS(data);
+            
             // Сервер -> клиент
             nspChat.to(belongRoomName).emit("add mess", {
                 name: userInfo["name"],
-                msg: data
+                msg: dataClear
             });
         });
         

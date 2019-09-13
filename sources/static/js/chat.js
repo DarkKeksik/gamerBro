@@ -3,11 +3,6 @@ $(() => {
     // При нажатии "Поехали", открываем окно чата
     let nspGame;
     
-    // 
-    let escape = (string) => {
-        
-    }
-    
     // Функция для проверки от xxs
     let protectedXXS = (string) => {
         let htmlEscapes = {
@@ -55,7 +50,8 @@ $(() => {
             let userMsg = $(".modalChat__panelMes").val();
             
             // Происходит событие
-            nspGame.emit("send mess", protectedXXS(userMsg) );
+            nspGame.emit("send mess", userMsg);
+            
             // Чистим от прошлого сообщения
             $(".modalChat__panelMes").val("");
         });
