@@ -17,10 +17,30 @@ body {
   margin: 0;
 }
 #particles-js {
-  height: 99%;
-  width: 100%;
   position: absolute;
   top: 0;
+  height: 99%;
+  width: 100%;
+}
+.usersBlock {
+  display: inline-block;
+  margin-left: 1rem;
+  padding: 2px 6px;
+}
+.usersBlock__item {
+  display: inline-block;
+  padding: 3px 4px;
+  border-radius: 100%;
+  color: white;
+  box-shadow: 2px 3px 3px #b3b3b3;
+  background-color: #99629a;
+  margin-right: 4px;
+}
+.usersBlock__item:first-of-type {
+  margin-right: 0;
+}
+.usersBlock__item:last-of-type {
+  margin-right: 0;
 }
 .menu {
   position: fixed;

@@ -89,15 +89,6 @@ nspChat.on("connection", (socket) => {
     let socketInRooms_item, userInfo;
 
     userInfoPromise.then((userInfo) => {
-
-//        console.log(`
-//      "От пользователя: \n
-//      ${userInfo["name"]} \n
-//      ${userInfo["gameName"]} \n
-//      ${userInfo["usersAmount"]}
-//    `);
-
-
         // При подключении нового клиента к чату, говорим об этом
         let tellAboutNewUser = (maxUsers) => {
             
@@ -150,16 +141,9 @@ nspChat.on("connection", (socket) => {
         let addNewUserOnRoom = (elem, maxUsers) => {
             let maxUsersInside = maxUsers;
             let roomNameLast = findNameLastRoom(maxUsersInside);
-//                checkQuantity = elem["allRooms"][roomNameLast]["sockets"]; 
 
-//            if (checkQuantity) {
             elem["allRooms"][roomNameLast]["sockets"].push(socket.client.id);
-//            let indexLast = Object.keys(elem.allRooms).length - 1,
-//                elemRoomName = Object.keys(elem.allRooms)[indexLast];
-
-    //                console.log(`Добавляем в комнату: ${elemRoomName}`);
             socket.join(roomNameLast);
-//            }
         };
 
 
@@ -208,7 +192,6 @@ nspChat.on("connection", (socket) => {
                     tellAboutNewUser(userInfo["usersAmount"]);
                 }
                 else if (elem["allRooms"][roomNameLast]["sockets"].length < roomMaxUsers) {
-//                    socket.join(roomNameLast);
                     addNewUserOnRoom(elem, userInfo["usersAmount"]);
                     tellAboutNewUser(userInfo["usersAmount"]);
                 } else {
@@ -245,7 +228,7 @@ nspChat.on("connection", (socket) => {
             return roomName;
         }
 
-        // Клиент -> сервер
+        // Сообщение клиент -> сервер
         socket.on("send mess", (data) => {            
             let belongRoomName = sentMessage(socket.client.id);
             console.log("Id сокета ", socket.client.id);
@@ -256,8 +239,7 @@ nspChat.on("connection", (socket) => {
                 msg: data
             });
         });
-
-
+        
         socket.on("disconnect", (data) => {
 
             // Ликвидируем предателя

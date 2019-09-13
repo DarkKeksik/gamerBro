@@ -1,25 +1,28 @@
 <div class="modalChat">
-  <div class="modalChat__wrap">
-    <div class="modalChat__bg"></div>
-    <div class="modalChat__text">
+    <div class="modalChat__wrap">
+        <div class="modalChat__bg"></div>
+        <div class="modalChat__text">
 
-      <h3 class="modalChat__title">
-        Команда по <span class="modalChat__Title_game"></span>
-      </h3>
+            <h3 class="modalChat__title">
+                Команда по <span class="modalChat__Title_game"></span>
+            </h3>
 
-      <div class="modalChat__userpanel">
-        <span class="modalChat__userpanel-icon icon-refresh"></span>
-        <span id="minimizeChat" class="modalChat__userpanel-icon icon-minimize"></span>
-        <span class="modalChat__userpanel-icon icon-logout"></span>
-      </div>
+            <!-- Панель с всеми пользователи в комнате -->
+            <div class="usersBlock"></div>
 
-      <div class="modalChat__textMes"></div>
+            <div class="modalChat__userpanel">
+                <span class="modalChat__userpanel-icon icon-refresh"></span>
+                <span id="minimizeChat" class="modalChat__userpanel-icon icon-minimize"></span>
+                <span class="modalChat__userpanel-icon icon-logout"></span>
+            </div>
+
+            <div class="modalChat__textMes"></div>
+        </div>
+
+        <div class="modalChat__panel">
+            <textarea class="modalChat__panelMes" contenteditable="true" tabindex="0"></textarea>
+            <span class="modalChat__panelSub icon-bubbles41"></span>
+        </div>
+
     </div>
-
-    <div class="modalChat__panel">
-      <div class="modalChat__panelMes" contenteditable="true" tabindex="0"></div>
-      <span class="modalChat__panelSub icon-bubbles41"></span>
-    </div>
-
-  </div>
 </div>
