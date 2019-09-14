@@ -2,21 +2,6 @@ $(() => {
 
     // При нажатии "Поехали", открываем окно чата
     let nspGame;
-    
-    // Функция для проверки от xxs
-    let protectedXXS = (string) => {
-        let htmlEscapes = {
-            '&': ' ',
-            '<': ' ',
-            '>': ' ',
-            '"': ' ',
-            "'": " "
-        };
-
-        return string.replace(/[&<>"']/g, (match) => {
-            return htmlEscapes[match];
-        });
-    };
 
     let startChat = new Promise((resolve, reject) => {
         $("body").on("click", ".modal__submit", function () {
@@ -63,7 +48,7 @@ $(() => {
         nspGame.on("connectNewUser", (data) => {
             $(".modalChat__textMes").append(`
         <p class="modalChat__alert modalChat__alert_newUser">Подключился ${data.name}</p>
-      `);
+      	`);
 
             $(".usersBlock").append(`
             <div class="usersBlock__item" title="${data.name}">
@@ -71,7 +56,7 @@ $(() => {
                     <span class="icon-user"></span>
                 </div>
             </div>
-        `);
+        	`);
         });
 
         nspGame.on("disconnectUser", (data) => {

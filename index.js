@@ -106,12 +106,17 @@ nspChat.on("connection", (socket) => {
     let socketInRooms_item, userInfo;
 
     userInfoPromise.then((userInfo) => {
+        let allUsersOnRoom = () => {
+            
+        }
+        
         // При подключении нового клиента к чату, говорим об этом
         let tellAboutNewUser = (maxUsers) => {
             
             let roomNameLast = findNameLastRoom(maxUsers);
             nspChat.to( roomNameLast ).emit("connectNewUser", {
-                name: userInfo["name"]
+                name: userInfo["name"],
+                usersOnRoom: []
             });
         };
         
@@ -193,27 +198,25 @@ nspChat.on("connection", (socket) => {
                 let roomsCount = findAllRooms(elem, userInfo["usersAmount"]).length;
 
                 // Название последней созданной комнаты 
-                let roomNameLast, roomMaxUsers, roomsMaxUsersCheck;
+                let roomNameLast, roomUsersMax, roomsMaxUsersCheck, roomUsersNow;
 
-                // Создаем комнаты 
+                // Если была созданна хоть одна любая комната
                 if (roomsCount > 0) {
                     roomNameLast = findNameLastRoom(userInfo["usersAmount"]);
-                    roomMaxUsers = elem["allRooms"][roomNameLast]["maxUsers"];                    
-                    roomsMaxUsersCheck = roomMaxUsers != userInfo["usersAmount"];
+                    roomUsersMax = elem["allRooms"][roomNameLast]["maxUsers"];                    
+                    roomsMaxUsersCheck = roomUsersMax != userInfo["usersAmount"];
+                    roomUsersNow = elem["allRooms"][roomNameLast]["sockets"].length;
                 }
                 
-                if (roomsCount == 0 || roomsMaxUsersCheck) {
+                // Создаем новую комнату
+                if ( (roomsCount == 0 || roomsMaxUsersCheck) || (roomUsersNow >= roomUsersMax) ) {
                     let roomName = createNameRoom(elem, userInfo["usersAmount"]);
                     createNewRoom(elem, roomName, userInfo["usersAmount"]);
                     addNewUserOnRoom(elem, userInfo["usersAmount"]);
                     tellAboutNewUser(userInfo["usersAmount"]);
                 }
-                else if (elem["allRooms"][roomNameLast]["sockets"].length < roomMaxUsers) {
-                    addNewUserOnRoom(elem, userInfo["usersAmount"]);
-                    tellAboutNewUser(userInfo["usersAmount"]);
-                } else {
-                    let roomName = createNameRoom(elem, userInfo["usersAmount"]);
-                    createNewRoom(elem, roomName, userInfo["usersAmount"]);
+                // Добавляем пользователя в комнату
+                else {
                     addNewUserOnRoom(elem, userInfo["usersAmount"]);
                     tellAboutNewUser(userInfo["usersAmount"]);
                 }
