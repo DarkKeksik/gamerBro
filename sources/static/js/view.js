@@ -3,7 +3,7 @@ $( document ).ready(function() {
 
     // Увеличение картинки
     $(".s-preview__wrapZoom").click(function() {
-      let img = $(this).children(".fancybox");
+      let img = $( this ).children(".fancybox");
       let src = img.attr('src');
 
       $("body").append(`
@@ -40,7 +40,9 @@ $( document ).ready(function() {
     let gameChecked = $(".modal__select option:checked").val();
     $(`.modal__usersMax[data-game`).hide();
     $(`.modal__usersMax[data-game='${gameChecked}']`).show();
-    $(".modal").slideDown();
+    $(".modal").slideDown(function() {
+        $(".modal__input_name").focus();
+    });
   });
 
   $("body").on("keydown", function(event) {

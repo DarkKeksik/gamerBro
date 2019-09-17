@@ -106,8 +106,14 @@ nspChat.on("connection", (socket) => {
     let socketInRooms_item, userInfo;
 
     userInfoPromise.then((userInfo) => {
-        let allUsersOnRoom = () => {
+        let allUsersOnRoom = (elem, maxUsers) => {
+            let maxUsersInside = maxUsers;
+            let roomNameLast = findNameLastRoom(maxUsersInside);
             
+            // Имитируем событие
+            nspChat.to( roomNameLast ).emit("usersOnRoom", {
+                usersOnRoom: elem["allRooms"][roomNameLast]["sockets"]
+            });
         }
         
         // При подключении нового клиента к чату, говорим об этом
@@ -115,8 +121,7 @@ nspChat.on("connection", (socket) => {
             
             let roomNameLast = findNameLastRoom(maxUsers);
             nspChat.to( roomNameLast ).emit("connectNewUser", {
-                name: userInfo["name"],
-                usersOnRoom: []
+                name: userInfo["name"]
             });
         };
         
@@ -208,16 +213,16 @@ nspChat.on("connection", (socket) => {
                     roomUsersNow = elem["allRooms"][roomNameLast]["sockets"].length;
                 }
                 
-                // Создаем новую комнату
+                // Создаем новую комнату или добавляем
                 if ( (roomsCount == 0 || roomsMaxUsersCheck) || (roomUsersNow >= roomUsersMax) ) {
                     let roomName = createNameRoom(elem, userInfo["usersAmount"]);
                     createNewRoom(elem, roomName, userInfo["usersAmount"]);
                     addNewUserOnRoom(elem, userInfo["usersAmount"]);
+                    allUsersOnRoom(elem, userInfo["usersAmount"]);
                     tellAboutNewUser(userInfo["usersAmount"]);
-                }
-                // Добавляем пользователя в комнату
-                else {
+                } else {
                     addNewUserOnRoom(elem, userInfo["usersAmount"]);
+                    allUsersOnRoom(elem, userInfo["usersAmount"]);
                     tellAboutNewUser(userInfo["usersAmount"]);
                 }
             }

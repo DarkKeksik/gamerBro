@@ -22,7 +22,10 @@ $(() => {
 
             // Отсылаем имя и название игры
             nspGame.emit("getInfoByUser", dataUser);
-            $(".modalChat").slideDown();
+            $(".modalChat").slideDown(function() {
+                $(".modalChat__panelMes").focus();
+            });
+            
             $( this ).parents(".modal").slideUp();
             resolve(dataUser);
         });
@@ -47,16 +50,28 @@ $(() => {
 
         nspGame.on("connectNewUser", (data) => {
             $(".modalChat__textMes").append(`
-        <p class="modalChat__alert modalChat__alert_newUser">Подключился ${data.name}</p>
-      	`);
-
-            $(".usersBlock").append(`
-            <div class="usersBlock__item" title="${data.name}">
-                <div class="usersBlock__photo">
-                    <span class="icon-user"></span>
-                </div>
-            </div>
-        	`);
+                <p class="modalChat__alert modalChat__alert_newUser">Подключился ${data.name}</p>
+            `);
+            setTimeout(() => {
+                $(".modalChat__alert_newUser:last").slideUp(350, function() {
+                    $( this ).detach();
+                });
+            }, 2000);
+        });
+        
+        // Блок со всеми пользователями
+        nspGame.on("usersOnRoom", (data) => {
+            $(".usersBlock").empty();
+            
+            data.usersOnRoom.forEach((user) => {
+                $(".usersBlock").append(`
+                    <div class="usersBlock__item" title="${user}">
+                        <div class="usersBlock__photo">
+                            <span class="icon-user"></span>
+                        </div>
+                    </div>
+                `);
+            });
         });
 
         nspGame.on("disconnectUser", (data) => {
