@@ -161,37 +161,20 @@ $( document ).ready(function() {
 
     const startFindBtn = document.getElementById('findRoom');
 
-    if (!startFindBtn) {
-
-      modal.removeEventListener('keypress');
-      return;
-    } else {
-
-      modal.addEventListener('keypress', (event) => {
+    if (startFindBtn) {
+      document.addEventListener('keypress', (event) => {
         const keyName = event.code;
     
         if (keyName === 'Enter') {
           event.preventDefault();
     
           startFindBtn.click();
+          modal.remove();
         }
-      
       });
 
-      document.getElementsByClassName('modal')[0].remove();
       return;
     }
-  }
-
-  function addEnterListerner (event) {
-    const keyName = event.code;
-
-    if (keyName === 'Enter') {
-      event.preventDefault();
-
-      startFindBtn.click();
-    }
-  
   }
 
 });
