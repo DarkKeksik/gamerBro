@@ -147,11 +147,51 @@ $( document ).ready(function() {
   });
 
   const modalCloseButton = document.getElementById('modalClose');
+  let modal = document.getElementsByClassName('modal')[0];
 
   if (modalCloseButton) {
     modalCloseButton.onclick = () => {
-      let modal = document.getElementsByClassName('modal')[0];
       modal.style.display = 'none';
     };
+    startFindRoomAndDeleteModal(modal);
   }
+
+
+  function startFindRoomAndDeleteModal(modal) {
+
+    const startFindBtn = document.getElementById('findRoom');
+
+    if (!startFindBtn) {
+
+      modal.removeEventListener('keypress');
+      return;
+    } else {
+
+      modal.addEventListener('keypress', (event) => {
+        const keyName = event.code;
+    
+        if (keyName === 'Enter') {
+          event.preventDefault();
+    
+          startFindBtn.click();
+        }
+      
+      });
+
+      document.getElementsByClassName('modal')[0].remove();
+      return;
+    }
+  }
+
+  function addEnterListerner (event) {
+    const keyName = event.code;
+
+    if (keyName === 'Enter') {
+      event.preventDefault();
+
+      startFindBtn.click();
+    }
+  
+  }
+
 });

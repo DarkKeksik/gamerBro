@@ -101,4 +101,35 @@ $(() => {
         $(".modalChat__Title_game").text(dataUser["gameName"]);
     });
 
+    function sendMesageByEnter(message) {
+
+        const sendMessageBtn = document.getElementById('sendChatMessage');
+
+            document.addEventListener('keypress', (event) => {
+                const ctrlKey = event.ctrlKey;
+                const keyName = event.code;
+
+                if (ctrlKey && keyName === 'Enter') {
+                    event.preventDefault();
+                    moveTextLine();
+                } else if (keyName === 'Enter') {
+                    sendMessageBtn.click();
+                }
+        });
+    }
+
+    function moveTextLine() {
+
+        const chatArea = document.getElementById('chatArea');
+        chatArea.addEventListener('keypress', (event) => {
+
+              document.execCommand('insertHTML', false, '<br><br>');
+              return false;
+          });
+    }
+
+    sendMesageByEnter();
+    // moveTextLine();
+
+
 });
