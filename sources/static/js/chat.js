@@ -48,6 +48,7 @@ $(() => {
             window.test = event;
         });
 
+        // Подключаемся
         nspGame.on("connectNewUser", (data) => {
             $(".modalChat__textMes").append(`
                 <p class="modalChat__alert modalChat__alert_newUser">Подключился ${data.name}</p>
@@ -58,6 +59,19 @@ $(() => {
                 });
             }, 2000);
         });
+        
+        // Уходим
+        nspGame.on("disconnectUser", (data) => {
+            $(".modalChat__textMes").append(`
+                <p class="modalChat__alert modalChat__alert_disconnectUser">Отключился ${data.name}</p>
+            `);
+            setTimeout(() => {
+                $(".modalChat__alert_disconnectUser:last").slideUp(350, function() {
+                    $( this ).detach();
+                });
+            }, 2000);
+        });
+        
         
         // Блок со всеми пользователями
         nspGame.on("usersOnRoom", (data) => {
@@ -72,12 +86,6 @@ $(() => {
                     </div>
                 `);
             });
-        });
-
-        nspGame.on("disconnectUser", (data) => {
-            $(".modalChat__textMes").append(`
-        <p class="modalChat__alert modalChat__alert_disconnectUser">Отключился ${data.name}</p>
-      `);
         });
 
         nspGame.on("add mess", (data) => {
