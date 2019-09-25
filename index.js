@@ -104,7 +104,7 @@ nspChat.on("connection", (socket) => {
 
     // Добавляем id сокета в масиив
     let socketInRooms_item, userInfo;
-
+    
     userInfoPromise.then((userInfo) => {
         let allUsersOnRoom = (elem, maxUsers) => {
             let maxUsersInside = maxUsers;
@@ -272,27 +272,31 @@ nspChat.on("connection", (socket) => {
 
             // Ликвидируем предателя
             let socketId = socket.client.id;
-            socketInRooms.forEach((item) => {
-                let allRoomsOnGame = item["allRooms"],
+            socketInRooms.forEach((itemGame) => {
+                let allRoomsOnGame = itemGame["allRooms"],
                     allRoomsOnGame_keys = Object.keys(allRoomsOnGame);
 
                 // Проходим все комнаты для нахождения сокетов
                 allRoomsOnGame_keys.forEach((item) => {
-                    console.log(`item: ${item}`);
                     let allRoomsOnGame_sockets = allRoomsOnGame[item]["sockets"];
-                    console.log(`allRoomsOnGame[item]: ${allRoomsOnGame[item]}`);
                     let allRoomsOnGame_socketPosition = allRoomsOnGame_sockets.indexOf(socketId);
-
+                    
                     // Удаляем из массива отключившийся сокет
                     if (allRoomsOnGame_socketPosition > -1) {
                         allRoomsOnGame_sockets.splice(allRoomsOnGame_socketPosition, 1);
-
+                        
                         // Говорим об этом членам комнаты
                         nspChat.to(item).emit("disconnectUser", {
                             name: userInfo["name"]
                         });
-
+                        
+                        // Удаляем из комнаты
                         socket.leave(item);
+                        
+                        // Показываем остальным сокетам кто в комнате
+                        nspChat.to( item ).emit("usersOnRoom", {
+                            usersOnRoom: itemGame["allRooms"][item]["sockets"]
+                        });
                     }
                 });
             });
