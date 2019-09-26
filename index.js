@@ -14,7 +14,7 @@ app.set("view engine", "ejs");
 app.use("/static", express.static("./sources/static"));
 
 // Комнаты (правильная структура) 
-// "d2@3da@D@2d2d!3": { sockets: [], maxUsers: 5 }
+// "d2@3da@D@2d2d!3": { sockets: {}, maxUsers: 5 }
 let socketInRooms = [
     {
         gameName: "Dota 2",
@@ -168,8 +168,8 @@ nspChat.on("connection", (socket) => {
         let addNewUserOnRoom = (elem, maxUsers) => {
             let maxUsersInside = maxUsers;
             let roomNameLast = findNameLastRoom(maxUsersInside);
-
-            elem["allRooms"][roomNameLast]["sockets"].push(socket.client.id);
+            
+            elem["allRooms"][roomNameLast]["sockets"][socket.client.id] = userInfo["name"];
             socket.join(roomNameLast);
         };
 
@@ -177,7 +177,7 @@ nspChat.on("connection", (socket) => {
         // Создание новой комнаты
         let createNewRoom = (elem, roomName, maxUsers) => {
             elem["allRooms"][roomName] = {
-                sockets: [],
+                sockets: {},
                 maxUsers: maxUsers
             }
             console.log(`Проверяем кол-во человек в комнате ${maxUsers}`);
@@ -210,7 +210,7 @@ nspChat.on("connection", (socket) => {
                     roomNameLast = findNameLastRoom(userInfo["usersAmount"]);
                     roomUsersMax = elem["allRooms"][roomNameLast]["maxUsers"];                    
                     roomsMaxUsersCheck = roomUsersMax != userInfo["usersAmount"];
-                    roomUsersNow = elem["allRooms"][roomNameLast]["sockets"].length;
+                    roomUsersNow = Object.keys(elem["allRooms"][roomNameLast]["sockets"]).length;
                 }
                 
                 // Создаем новую комнату или добавляем
@@ -238,7 +238,7 @@ nspChat.on("connection", (socket) => {
 
                 allRooms.forEach((elemNameRoom) => {
                     let itemRoom = elemAllRooms["allRooms"][elemNameRoom];
-                    let itemRoomSockets = elemAllRooms["allRooms"][elemNameRoom]["sockets"];
+                    let itemRoomSockets = Object.keys(elemAllRooms["allRooms"][elemNameRoom]["sockets"]);
                     
                     // Находим первую принадлежность сокета к комнате
                     itemRoomSockets.forEach((socketItem) => {
@@ -249,12 +249,11 @@ nspChat.on("connection", (socket) => {
                 });
             });
             
-            console.log("Результат ", roomName);
             return roomName;
         }
 
         // Сообщение клиент -> сервер
-        socket.on("send mess", (data) => {            
+        socket.on("send mess", (data) => {
             let belongRoomName = sentMessage(socket.client.id);
             console.log("Id сокета ", socket.client.id);
             console.log("Отправляем в комнату: ", belongRoomName );
@@ -276,15 +275,17 @@ nspChat.on("connection", (socket) => {
                 let allRoomsOnGame = itemGame["allRooms"],
                     allRoomsOnGame_keys = Object.keys(allRoomsOnGame);
 
+                
                 // Проходим все комнаты для нахождения сокетов
                 allRoomsOnGame_keys.forEach((item) => {
                     let allRoomsOnGame_sockets = allRoomsOnGame[item]["sockets"];
-                    let allRoomsOnGame_socketPosition = allRoomsOnGame_sockets.indexOf(socketId);
+                    let allRoomsOnGame_socketsKeys = Object.keys(allRoomsOnGame_sockets);
+                    let allRoomsOnGame_socketPosition = allRoomsOnGame_socketsKeys.indexOf(socketId);
                     
-                    // Удаляем из массива отключившийся сокет
                     if (allRoomsOnGame_socketPosition > -1) {
-                        allRoomsOnGame_sockets.splice(allRoomsOnGame_socketPosition, 1);
-                        
+                        // Удаляем из массива отключившийся сокет
+                        delete(allRoomsOnGame_sockets[socketId]);
+
                         // Говорим об этом членам комнаты
                         nspChat.to(item).emit("disconnectUser", {
                             name: userInfo["name"]

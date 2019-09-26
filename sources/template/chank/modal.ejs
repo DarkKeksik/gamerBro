@@ -38,10 +38,12 @@
                         <div class="modal__usersMax" data-game="<%- item %>">
                             <p class="modal__usersMax-item modal__usersMax-item_active" data-amount="<%- gameAll[item] %>" title="Команда из <%- gameAll[item] %> бро">
                                 Команду
+                                <span class="modal__usersMax-val">на <%- gameAll[item] %> человек</span>
                             </p>
 
                             <p class="modal__usersMax-item" data-amount="2" title="Поиск напарника">
                                 Напарника
+                                <span class="modal__usersMax-val">2 человека</span>
                             </p>
                         </div>
                         <% }); %>

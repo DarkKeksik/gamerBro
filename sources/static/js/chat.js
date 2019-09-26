@@ -44,10 +44,6 @@ $(() => {
             $(".modalChat__panelMes").val("");
         });
 
-        $("body").on("keydown", ".modalChat__panelSub", function (event) {
-            window.test = event;
-        });
-
         // Подключаемся
         nspGame.on("connectNewUser", (data) => {
             $(".modalChat__textMes").append(`
@@ -77,9 +73,10 @@ $(() => {
         nspGame.on("usersOnRoom", (data) => {
             $(".usersBlock").empty();
             
-            data.usersOnRoom.forEach((user) => {
+            Object.keys(data.usersOnRoom).forEach((userId) => {
+                let userName = data.usersOnRoom[userId];
                 $(".usersBlock").append(`
-                    <div class="usersBlock__item" title="${user}">
+                    <div class="usersBlock__item" title="${userName}">
                         <div class="usersBlock__photo">
                             <span class="icon-user"></span>
                         </div>

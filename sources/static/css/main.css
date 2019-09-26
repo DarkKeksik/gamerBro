@@ -688,6 +688,11 @@ body {
 .modal__label {
   display: block;
 }
+.modal__usersMax-val {
+  display: block;
+  font-size: .75rem;
+  margin-top: 3px;
+}
 .modal__usersMax-input {
   margin-right: 5px;
 }
