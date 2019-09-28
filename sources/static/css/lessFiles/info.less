@@ -1,0 +1,264 @@
+// Стили под увеличение картинки
+.image {
+	margin:30px;
+	cursor:zoom-in;
+}
+
+.popup {
+	position: absolute;
+	height:100%;
+	width:100%;
+	top:0;
+	left:0;
+	display:none;
+	text-align:center;
+  z-index: 999;
+}
+
+
+.popup_bg {
+	background:rgba(0,0,0,0.3);
+	position:fixed;
+	z-index:1;
+	top: 0;
+	left: 0;
+	bottom: 0;
+	right: 0;
+	width: auto;
+  height: auto;
+}
+
+
+.popup_img {
+	position: fixed;
+	z-index:2;
+	left: 50%;
+	top: 50%;
+	transform: translate(-50%,-50%);
+	max-height: 90%;
+}
+
+.popup_img {
+  pointer-events: none;
+}
+// Конец стилей под увеличение картинки
+
+.s-preview {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  height: 100vh;
+
+  font-family: "Roboto";
+  background-color: #2d2d2d;
+
+  background-size: cover;
+  background-position: center;
+  background-image: url("../img/bg/dota.jpg");
+
+  &__wrapZoom {
+    position: relative;
+    &-modal {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+
+      height: 100%;
+      width: 100%;
+      position: absolute;
+      background-color: #424242;
+      color: white;
+      opacity: .6;
+      cursor: pointer;
+      transition-duration: .3s;
+      &:hover {
+        opacity: 0.8 ;
+        &:hover .s-preview__wrapZoom-icon {
+          padding: 30px;
+          background-color: white;
+          color: black;
+        }
+      }
+    }
+    &-icon {
+      padding: 20px;
+      font-size: 38px;
+      border-radius: 100%;
+      transition-duration: .3s;
+      background-color: #000;
+      color: white;
+    }
+  }
+
+  &__ul {
+    color: #e1e1e1;
+    padding: 20px 10px;
+    background-color: #4B6A99;
+    line-height: 20px;
+    font-size: 17px;
+    border-radius: 3px;
+  }
+  &__li {
+    list-style-type: none;
+    margin-bottom: 3px;
+  }
+  &__wrap {
+    margin: 0 auto;
+    max-width: 1024px;
+    width: 100%;
+    text-align: center;
+    z-index: 1;
+    background-color: #46464600;
+  }
+  &__title {
+    letter-spacing: 1px;
+    text-align: center;
+    font-size: 70px;
+    font-weight: 700;
+    font-family: 'VT323';
+    color: #fff;
+    color: #FFEFAE;
+
+    &-wrap {
+      margin-bottom: 50px;
+    }
+  }
+  &__itemExtra {
+    padding: 10px;
+    color: #949494;
+    border-radius: 5px;
+    cursor: default;
+    transition-duration: .3s;
+
+    // &:nth-of-type(2) {
+    //   margin-top: 5px;
+    //   background-color: #635A918C;
+    //   padding: 10px 10px;
+    //   border-radius: 5px;
+    // }
+    &:hover {
+      box-shadow: 0 0 15px #242424;
+      background-color: #2d2d2d;
+      transform: scale(1.05);
+    }
+  }
+  &__subtitle {
+    display: block;
+    margin-bottom: 15px;
+    font-weight: 700;
+    font-size: 20px;
+    letter-spacing: 1px;
+    font-size: 25px;
+    color: #9DB6DD;
+    text-align: center;
+    transition-duration: .3s;
+  }
+  &__info {
+    display: inline-block;
+    max-width: 49%;
+    width: 100%;
+    text-align: left;
+    color: #363636;
+  }
+  &__guidWrap {
+    display: inline-block;
+    max-width: 47%;
+    vertical-align: top;
+    padding: 10px 15px;
+    border-radius: 5px;
+  }
+  &__guidImg {
+    height: 353px;
+    width: 100%;
+    border-radius: 3px;
+  }
+  &__item {}
+  &__icon {
+    position: absolute;
+    transform: translateY(-5px);
+  }
+  &__text {
+    display: inline-block;
+    padding: 15px 10px;
+    background-color: #5b4ca2;
+    line-height: 25px;
+    font-size: 17px;
+    border-radius: 3px;
+    color: #dfdfdf;
+  }
+  &__button {
+    display: inline-block;
+    border-radius: 7px;
+    text-transform: uppercase;
+    transition-duration: .3s;
+    letter-spacing: 1px;
+    font-size: 12px;
+    padding: 1px 10px;
+    color: #3c3c3c;
+    font-weight: 700;
+    background-color: #80d58c;
+    color: #424242;
+
+    &:hover { background-color: #d7d7d7; }
+  }
+  &__available {
+    font-size: 14px;
+    font-weight: 700;
+    color: #434343;
+    border-radius: 5px;
+    text-align: left;
+    padding: 15px 10px;
+    margin: 0 3px;
+  }
+  &__availableTitle {
+    display: block;
+    margin-bottom: 15px;
+    color: #9db6dd;
+    letter-spacing: 1px;
+    font-size: 18px;
+  }
+  &__game {
+    display: inline-block;
+    padding: 5px 10px;
+    margin: 0 2px;
+    color: white;
+    letter-spacing: 1px;
+    border-radius: 5px;
+    font-size: 12px;
+    color: #424242;
+    &_enable {
+      cursor: default;
+      background-color: #bc4a37;
+    }
+    &_available {
+      cursor: pointer;
+      background-color: #80d58c;
+      transition-duration: .3s;
+      &:hover {
+        background-color: #d7d7d7;
+        transform: scale(1.05);
+      }
+    }
+  }
+  &__nextSection {
+    position: absolute;
+    bottom: 0;
+    text-align: center;
+    width: 100%;
+    background-color: #232323;
+    opacity: 0.5;
+    cursor: pointer;
+    transition-duration: .3s;
+    &:hover {
+      background-color: #232323;
+      opacity: 1;
+    }
+
+    &-icon {
+      font-size: 40px;
+      font-weight: 700;
+      color: #bababa;
+    }
+  }
+}
