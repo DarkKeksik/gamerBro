@@ -3,7 +3,7 @@
   width: 100%;
   background-color: #232323;
   z-index: 2;
-  box-shadow: 0 0 10px #000;
+  box-shadow: 0 0 .625rem #000;
   transition-duration: .3s;
   z-index: 3;
 
@@ -12,13 +12,13 @@
     &:hover { opacity: 1; }
   }
   &__globWrap {
-    max-width: 1024px;
+    max-width: 64rem;
     margin: 0 auto;
   }
   &__logo {
     display: inline-block;
-    height: 80px;
-    width: 80px;
+    height: 5rem;
+    width: 5rem;
     vertical-align: top;
     background-color: white;
     background-image: url("../img/logoV1.jpg");
@@ -28,8 +28,8 @@
     background-repeat: no-repeat;
 
     &_scroll {
-      height: 55px;
-      width: 55px;
+      height: 3.4375rem;
+      width: 3.4375rem;
     }
   }
   &__wrap {
@@ -39,9 +39,9 @@
   &__item {
     position: relative;
     display: inline-block;
-    padding: 32px 14px;
-    min-width: 50px;
-    font-size: 14px;
+    padding: 2rem .875rem;
+    min-width: 3.125rem;
+    font-size: .875rem;
     letter-spacing: 1px;
     font-family: "Roboto";
     text-decoration: none;
@@ -52,7 +52,7 @@
     overflow: hidden;
     vertical-align: top;
     &_scroll {
-      padding: 20px 5px;
+      padding: 1.25rem .3125rem;
     }
     &_active {
       background-color: #363636;
@@ -60,7 +60,7 @@
 
     &:hover { background-color: #626262; }
     &:hover .menu__icon {
-      bottom: 5px;
+      bottom: .3125rem;
     }
 
     .icon-star-full {
@@ -70,9 +70,9 @@
   &__icon {
     position: absolute;
     left: 0;
-    bottom: -20px;
+    bottom: -1.25rem;
     width: 100%;
-    font-size: 18px;
+    font-size: 1.125rem;
     transition-duration: .3s;
   }
 }

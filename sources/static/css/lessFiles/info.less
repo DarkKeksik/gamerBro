@@ -1,6 +1,6 @@
 // Стили под увеличение картинки
 .image {
-	margin:30px;
+	margin: 1.875rem;
 	cursor:zoom-in;
 }
 
@@ -44,17 +44,15 @@
 // Конец стилей под увеличение картинки
 
 .s-preview {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  height: 100vh;
-
-  font-family: "Roboto";
-  background-color: #2d2d2d;
-
-  background-size: cover;
-  background-position: center;
-  background-image: url("../img/bg/dota.jpg");
+    display: grid;
+    place-content: center;
+    min-height: 100vh;
+    font-family: "Roboto";
+    background-color: #2d2d2d;
+    background-size: cover;
+    background-position: center;
+    background-image: url("../img/bg/dota.jpg");
+    position: relative;
 
   &__wrapZoom {
     position: relative;
@@ -75,15 +73,15 @@
       &:hover {
         opacity: 0.8 ;
         &:hover .s-preview__wrapZoom-icon {
-          padding: 30px;
+          padding: 1.25rem;
           background-color: white;
           color: black;
         }
       }
     }
     &-icon {
-      padding: 20px;
-      font-size: 38px;
+      padding: 1.25rem;
+      font-size: 2.375rem;
       border-radius: 100%;
       transition-duration: .3s;
       background-color: #000;
@@ -93,10 +91,10 @@
 
   &__ul {
     color: #e1e1e1;
-    padding: 20px 10px;
+    padding: 1.250rem .625rem;
     background-color: #4B6A99;
-    line-height: 20px;
-    font-size: 17px;
+    line-height: 1.250rem;
+    font-size: 1.06rem;
     border-radius: 3px;
   }
   &__li {
@@ -104,39 +102,28 @@
     margin-bottom: 3px;
   }
   &__wrap {
-    margin: 0 auto;
-    max-width: 1024px;
-    width: 100%;
     text-align: center;
     z-index: 1;
-    background-color: #46464600;
   }
   &__title {
     letter-spacing: 1px;
     text-align: center;
-    font-size: 70px;
+    font-size: 4.375rem;
     font-weight: 700;
     font-family: 'VT323';
     color: #fff;
     color: #FFEFAE;
 
     &-wrap {
-      margin-bottom: 50px;
+      margin-bottom: 3.125rem;
     }
   }
   &__itemExtra {
-    padding: 10px;
+    padding: .625rem;
     color: #949494;
     border-radius: 5px;
     cursor: default;
     transition-duration: .3s;
-
-    // &:nth-of-type(2) {
-    //   margin-top: 5px;
-    //   background-color: #635A918C;
-    //   padding: 10px 10px;
-    //   border-radius: 5px;
-    // }
     &:hover {
       box-shadow: 0 0 15px #242424;
       background-color: #2d2d2d;
@@ -145,19 +132,18 @@
   }
   &__subtitle {
     display: block;
-    margin-bottom: 15px;
+    margin-bottom: .9375rem;
     font-weight: 700;
-    font-size: 20px;
+    font-size: 1.25rem;
     letter-spacing: 1px;
-    font-size: 25px;
+    font-size: 1.5625rem;
     color: #9DB6DD;
     text-align: center;
     transition-duration: .3s;
   }
   &__info {
     display: inline-block;
-    max-width: 49%;
-    width: 100%;
+    max-width: 33.25rem;
     text-align: left;
     color: #363636;
   }
@@ -165,11 +151,11 @@
     display: inline-block;
     max-width: 47%;
     vertical-align: top;
-    padding: 10px 15px;
+    padding: .625rem .9375rem;
     border-radius: 5px;
   }
   &__guidImg {
-    height: 353px;
+    height: 21.875rem;
     width: 100%;
     border-radius: 3px;
   }
@@ -180,10 +166,10 @@
   }
   &__text {
     display: inline-block;
-    padding: 15px 10px;
+    padding: .9375rem .625rem;
     background-color: #5b4ca2;
-    line-height: 25px;
-    font-size: 17px;
+    line-height: 1.5625rem;
+    font-size: 1.0625rem;
     border-radius: 3px;
     color: #dfdfdf;
   }
@@ -193,8 +179,8 @@
     text-transform: uppercase;
     transition-duration: .3s;
     letter-spacing: 1px;
-    font-size: 12px;
-    padding: 1px 10px;
+    font-size: .75rem;
+    padding: 1px .625rem;
     color: #3c3c3c;
     font-weight: 700;
     background-color: #80d58c;
@@ -203,29 +189,29 @@
     &:hover { background-color: #d7d7d7; }
   }
   &__available {
-    font-size: 14px;
-    font-weight: 700;
+    font-size: .875rem;
+    font-weight: 700;15
     color: #434343;
     border-radius: 5px;
     text-align: left;
-    padding: 15px 10px;
+    padding: .9375rem .625rem;
     margin: 0 3px;
   }
   &__availableTitle {
     display: block;
-    margin-bottom: 15px;
+    margin-bottom: .9375rem;
     color: #9db6dd;
     letter-spacing: 1px;
-    font-size: 18px;
+    font-size: 1.125rem;
   }
   &__game {
     display: inline-block;
-    padding: 5px 10px;
+    padding: .3125rem .625rem;
     margin: 0 2px;
     color: white;
     letter-spacing: 1px;
     border-radius: 5px;
-    font-size: 12px;
+    font-size: .75rem;
     color: #424242;
     &_enable {
       cursor: default;
