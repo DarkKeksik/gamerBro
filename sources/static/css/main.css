@@ -170,6 +170,12 @@ body {
   background-image: url("../img/bg/dota.jpg");
   position: relative;
 }
+.s-preview__bg {
+  position: absolute;
+  height: 100%;
+  width: 100%;
+  background-color: #202020e3;
+}
 .s-preview__wrapZoom {
   position: relative;
 }
@@ -188,7 +194,7 @@ body {
   transition-duration: .3s;
 }
 .s-preview__wrapZoom-modal:hover {
-  opacity: 0.8 ;
+  opacity: 0.8;
 }
 .s-preview__wrapZoom-modal:hover:hover .s-preview__wrapZoom-icon {
   padding: 1.25rem;
@@ -216,7 +222,9 @@ body {
   margin-bottom: 3px;
 }
 .s-preview__wrap {
-  text-align: center;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  max-width: 1024px;
   z-index: 1;
 }
 .s-preview__title {
@@ -229,6 +237,8 @@ body {
   color: #FFEFAE;
 }
 .s-preview__title-wrap {
+  grid-column-start: 1;
+  grid-column-end: -1;
   margin-bottom: 3.125rem;
 }
 .s-preview__itemExtra {
@@ -241,7 +251,6 @@ body {
 .s-preview__itemExtra:hover {
   box-shadow: 0 0 15px #242424;
   background-color: #2d2d2d;
-  transform: scale(1.05);
 }
 .s-preview__subtitle {
   display: block;
@@ -255,17 +264,14 @@ body {
   transition-duration: .3s;
 }
 .s-preview__info {
-  display: inline-block;
-  max-width: 33.25rem;
-  text-align: left;
+  display: grid;
+  align-items: center;
+  place-self: center;
   color: #363636;
 }
 .s-preview__guidWrap {
-  display: inline-block;
-  max-width: 47%;
-  vertical-align: top;
+  display: flex;
   padding: .625rem .9375rem;
-  border-radius: 5px;
 }
 .s-preview__guidImg {
   height: 21.875rem;
@@ -302,13 +308,14 @@ body {
   background-color: #d7d7d7;
 }
 .s-preview__available {
+  grid-column-start: 1;
+  grid-column-end: -1;
   font-size: .875rem;
   font-weight: 700;
   15color: #434343;
   border-radius: 5px;
   text-align: left;
   padding: .9375rem .625rem;
-  margin: 0 3px;
 }
 .s-preview__availableTitle {
   display: block;
@@ -319,13 +326,11 @@ body {
 }
 .s-preview__game {
   display: inline-block;
-  padding: .3125rem .625rem;
-  margin: 0 2px;
-  color: white;
+  padding: 0.633rem 0.725rem;
+  margin: 3px -4px 0 0;
   letter-spacing: 1px;
-  border-radius: 5px;
+  border-radius: 1px;
   font-size: .75rem;
-  color: #424242;
 }
 .s-preview__game_enable {
   cursor: default;
@@ -333,12 +338,14 @@ body {
 }
 .s-preview__game_available {
   cursor: pointer;
-  background-color: #80d58c;
+  background-color: #222;
+  color: #9a91c4;
   transition-duration: .3s;
 }
 .s-preview__game_available:hover {
-  background-color: #d7d7d7;
-  transform: scale(1.05);
+  background-color: #444;
+  color: #a4bbdd;
+  box-shadow: 0 0 10px #111;
 }
 .s-preview__nextSection {
   position: absolute;
@@ -637,4 +644,30 @@ body {
   background-color: white;
   border-radius: 100%;
   padding: 3px;
+}
+@media screen and (max-width: 1024px) {
+  html {
+    font-size: 15px;
+  }
+}
+@media screen and (max-width: 768px) {
+  html {
+    font-size: 14px;
+  }
+  .s-preview__wrap {
+    grid-template-columns: repeat(1, 1fr);
+  }
+  .s-preview__info {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+@media screen and (max-width: 500px) {
+  .s-preview__info {
+    grid-template-columns: repeat(1, 1fr);
+  }
+}
+@media screen and (max-width: 384px) {
+  html {
+    font-size: 12px;
+  }
 }

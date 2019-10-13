@@ -1,84 +1,86 @@
 <section class="s-preview">
-  <a name="s-preview"></a>
-  <div style="height: 100%;width: 100%;position: absolute;background-color: #202020e3;"></div>
-  
-  <div class="s-preview__wrap">
+    <a name="s-preview"></a>
+    <div class="s-preview__bg"></div>
 
-    <div class="s-preview__title-wrap">
-      <p class="s-preview__title">GamerBro, find your team</p>
-    </div>
+    <div class="s-preview__wrap">
 
-    <div class="s-preview__info">
-      <div class="s-preview__item">
-
-        <div class="s-preview__itemExtra">
-          <span class="s-preview__subtitle">О сервисе</span>
-          <span class="s-preview__text">
-            <span class="weight">GamerBro</span>
-            это бесплатный сервис для поиска игроков
-            в&nbsp;режиме реального времени.
-            Тебе достаточно нажать пару кнопок, а <span class="weight">GamerBro</span>
-            постарается найти тебе хорошую команду!
-          </span>
+        <div class="s-preview__title-wrap">
+            <p class="s-preview__title">GamerBro, find your team</p>
         </div>
 
-        <div class="s-preview__itemExtra">
-          <span class="s-preview__subtitle">Как начать поиск</span>
+        <div class="s-preview__info">
+            <div class="s-preview__item">
+                <div class="s-preview__itemExtra">
+                    <span class="s-preview__subtitle">О сервисе</span>
+                    <span class="s-preview__text">
+                        <span class="weight">GamerBro</span>
+                        это бесплатный сервис для поиска игроков
+                        в&nbsp;режиме реального времени.
+                        Тебе достаточно нажать пару кнопок, а <span class="weight">GamerBro</span>
+                        постарается найти тебе хорошую команду!
+                    </span>
+                </div>
+            </div>
 
-          <ul class="s-preview__ul">
-            <li class="s-preview__li">
-              <span class="weight">1)</span> Нажать
-              <a class="s-preview__button button__search">
-                Начать поиск команды!
-              </a>
-            </li>
-            <li class="s-preview__li">
-              <span class="weight">2)</span>
-              В открывшейся форме заполнить поля
-            </li>
-            <li class="s-preview__li">
-              <span class="weight">3)</span>
-              Нажать поехали
-            </li>
-            <li class="s-preview__li">
-              <span class="weight">4)</span>
-              Подождать...
-            </li>
-            <li class="s-preview__li">
-              <span class="weight">5)</span>
-              Готово! Осталось вежливо начать общение!
-            </li>
-          </ul>
+            <div class="s-preview__item">
+                <div class="s-preview__itemExtra">
+                    <span class="s-preview__subtitle">Как начать поиск</span>
 
+                    <ul class="s-preview__ul">
+                        <li class="s-preview__li">
+                            <span class="weight">1)</span> Нажать
+                            <a class="s-preview__button button__search"> Начать поиск команды! </a>
+                        </li>
+                        <li class="s-preview__li">
+                            <span class="weight">2)</span>
+                            В открывшейся форме заполнить поля
+                        </li>
+                        <li class="s-preview__li">
+                            <span class="weight">3)</span>
+                            Нажать поехали
+                        </li>
+                        <li class="s-preview__li">
+                            <span class="weight">4)</span>
+                            Подождать...
+                        </li>
+                        <li class="s-preview__li">
+                            <span class="weight">5)</span>
+                            Готово! Осталось вежливо начать общение!
+                        </li>
+                    </ul>
+
+                </div>
+            </div>
         </div>
-      </div>
-    </div>
-    
-    <div class="s-preview__info s-preview__guidWrap">
-      <span class="s-preview__subtitle">Гайд по сайту</span>
-      <div class="s-preview__wrapZoom">
 
-        <div class="s-preview__wrapZoom-modal">
-          <div class="icon-zoom s-preview__wrapZoom-icon"></div>
+        <div class="s-preview__info s-preview__guidWrap">
+            <div class="s-preview__guidWrap-item">
+                <span class="s-preview__subtitle">Гайд по сайту</span>
+                <div class="s-preview__wrapZoom">
+
+                    <div class="s-preview__wrapZoom-modal">
+                        <div class="icon-zoom s-preview__wrapZoom-icon"></div>
+                    </div>
+
+                    <img class="fancybox s-preview__guidImg" src="static/img/guid.gif" alt="">
+                </div>
+            </div>
         </div>
 
-        <img class="fancybox s-preview__guidImg" src="static/img/guid.gif" alt="">
-      </div>
+        <!-- Поиск по играм -->
+        <p class="s-preview__available" style="text-align: left;">
+            <span class="s-preview__availableTitle">Доступен поиск по играм:</span>
+
+            <!-- Отображаем все доступные игры -->
+            <% Object.keys(gameAll).forEach(function(item){ %>
+            <span class="s-preview__game s-preview__game_available">
+                <%- item %></span>
+            <% }); %>
+
+            <span class="s-preview__game s-preview__game_enable"> Pokemon Go </span>
+        </p>
     </div>
-
-    <!-- Поиск по играм -->
-    <p class="s-preview__available" style="text-align: left;">
-      <span class="s-preview__availableTitle">Доступен поиск по играм:</span>
-
-      <!-- Отображаем все доступные игры -->
-      <% Object.keys(gameAll).forEach(function(item){ %>
-        <span class="s-preview__game s-preview__game_available"><%- item %></span>
-      <% }); %>
-
-      <span class="s-preview__game s-preview__game_enable"> Pokemon Go </span>
-    </p>
-  </div>
-<!--
+    <!--
   <div class="s-preview__nextSection nextSection" data-href="beginFind">
     <a href="#" class="icon-arrow-down-sign-to-navigate s-preview__nextSection-icon"></a>
   </div> -->
