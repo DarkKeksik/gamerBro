@@ -54,21 +54,38 @@ let socketInRooms = [
 ];
 
 
-// Cписок игр и число игроков
-let gameAll = {};
+// Cписок игр, макс. число игроков и кол-во всех пользователей в играх
+let gamesList = (socketInRooms) => {
+    let gamesAll = {};
 
-Object.keys(socketInRooms).forEach((item) => {
-    let gameName = socketInRooms[item]["gameName"],
-        maxUsersDefault = socketInRooms[item]["maxUsersDefault"];
+    Object.keys(socketInRooms).forEach((item) => {
+        let gameName = socketInRooms[item]["gameName"],
+            maxUsersDefault = socketInRooms[item]["maxUsersDefault"],
+            allRooms = socketInRooms[item]["allRooms"];
 
-    gameAll[gameName] = maxUsersDefault;
-});
+        // Собираем кол-во всех пользователей в игре
+        let allUsersNow = 0;
+        Object.keys(allRooms).forEach((item) => {
+            allUsersNow += Object.keys(allRooms[item]["sockets"]).length;
+        });
+        console.log("В игре ", gameName, " пользователей: ", allUsersNow);
+
+        gamesAll[gameName] = {
+            "maxUsersDefault": maxUsersDefault,
+            "allUsersNow": allUsersNow
+        };
+    });
+    
+    return gamesAll;
+}
 
 // Главная страница
 app.get("/", (req, res) => {
+    let gamesAll = gamesList(socketInRooms);
+    
     // Послать ответ
     res.render(`${__dirname}/sources/template/index`, {
-        gameAll: gameAll
+        gamesAll: gamesAll
     });
 });
 
