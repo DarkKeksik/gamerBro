@@ -221,6 +221,14 @@ body {
   list-style-type: none;
   margin-bottom: 3px;
 }
+.s-preview__li-mark {
+  display: inline-block;
+  margin-right: .3125rem;
+  font-size: .75rem;
+  color: #232323;
+  font-weight: 700;
+  transition-duration: .3s;
+}
 .s-preview__wrap {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
@@ -293,19 +301,19 @@ body {
 }
 .s-preview__button {
   display: inline-block;
-  border-radius: 7px;
+  border-radius: 3px;
   text-transform: uppercase;
   transition-duration: .3s;
   letter-spacing: 1px;
-  font-size: .75rem;
-  padding: 1px .625rem;
-  color: #3c3c3c;
+  font-size: 0.75rem;
+  padding: 0.313rem 1.025rem;
   font-weight: 700;
-  background-color: #80d58c;
-  color: #424242;
+  background-color: #222;
+  color: #d2d2d2;
 }
 .s-preview__button:hover {
-  background-color: #d7d7d7;
+  background-color: #444;
+  color: #a4bbdd;
 }
 .s-preview__available {
   grid-column-start: 1;
@@ -338,14 +346,20 @@ body {
 }
 .s-preview__game_available {
   cursor: pointer;
-  background-color: #222;
-  color: #9a91c4;
+  background-color: #232323;
+  color: #9d94ca;
   transition-duration: .3s;
 }
 .s-preview__game_available:hover {
   background-color: #444;
   color: #a4bbdd;
   box-shadow: 0 0 10px #111;
+}
+.s-preview__game_allUsers {
+  color: #a4a4a4;
+  transform: translateY(-0.5rem) translateX(-0.1875rem);
+  display: inline-block;
+  font-size: .625rem;
 }
 .s-preview__nextSection {
   position: absolute;
@@ -447,9 +461,6 @@ body {
 .modal__submitWrap {
   text-align: center;
 }
-.modal__usersMax {
-  display: none;
-}
 .modal__label {
   display: block;
 }
@@ -471,7 +482,7 @@ body {
   grid-template-columns: 1fr 1fr;
   margin-top: .625rem;
   background-color: #404040;
-  border-radius: .625rem;
+  border-radius: .225rem;
   overflow: hidden;
   color: white;
 }
@@ -664,6 +675,9 @@ body {
 @media screen and (max-width: 500px) {
   .s-preview__info {
     grid-template-columns: repeat(1, 1fr);
+  }
+  .s-preview__title {
+    margin-top: 8rem;
   }
 }
 @media screen and (max-width: 384px) {

@@ -28,24 +28,24 @@
 
                     <ul class="s-preview__ul">
                         <li class="s-preview__li">
-                            <span class="weight">1)</span> Нажать
+                            <p class="s-preview__li-mark "><span class="icon-arrow-down"></span></p>
                             <a class="s-preview__button button__search"> Начать поиск команды! </a>
                         </li>
                         <li class="s-preview__li">
-                            <span class="weight">2)</span>
-                            В открывшейся форме заполнить поля
+                            <p class="s-preview__li-mark "><span class="icon-arrow-down"></span></p>
+                            Заполнить информацию
                         </li>
                         <li class="s-preview__li">
-                            <span class="weight">3)</span>
+                            <p class="s-preview__li-mark "><span class="icon-arrow-down"></span></p>
                             Нажать поехали
                         </li>
                         <li class="s-preview__li">
-                            <span class="weight">4)</span>
+                            <p class="s-preview__li-mark "><span class="icon-arrow-down"></span></p>
                             Подождать...
                         </li>
                         <li class="s-preview__li">
-                            <span class="weight">5)</span>
-                            Готово! Осталось вежливо начать общение!
+                            <p class="s-preview__li-mark "><span class="icon-arrow-down"></span></p>
+                            Вежливо начать общение и начать играть!
                         </li>
                     </ul>
 
@@ -68,17 +68,22 @@
         </div>
 
         <!-- Поиск по играм -->
-        <p class="s-preview__available" style="text-align: left;">
+        <div class="s-preview__available" style="text-align: left;">
             <span class="s-preview__availableTitle">Доступен поиск по играм:</span>
 
             <!-- Отображаем все доступные игры -->
-            <% Object.keys(gameAll).forEach(function(item){ %>
-            <span class="s-preview__game s-preview__game_available">
-                <%- item %></span>
-            <% }); %>
-
-            <span class="s-preview__game s-preview__game_enable"> Pokemon Go </span>
-        </p>
+            <div class="s-preview__games">               
+                <% Object.keys(gamesAll).forEach(function(item){ %>
+                <div class="s-preview__game s-preview__game_available">
+                    <span class="s-preview__game_val"><%- item %></span>
+                    <span class="s-preview__game_allUsers">
+                        <span class="icon-users"></span><%- gamesAll[item]["allUsersNow"] %>
+                    </span>
+                </div>
+                <% }); %>
+                <span class="s-preview__game s-preview__game_enable"> Pokemon Go </span>
+            </div>
+        </div>
     </div>
     <!--
   <div class="s-preview__nextSection nextSection" data-href="beginFind">

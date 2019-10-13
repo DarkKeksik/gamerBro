@@ -21,7 +21,7 @@
                         <span class="modal__subTitle">Игра для поиска: </span>
                         <select class="modal__select">
                             <!-- Выводим все доступные игры -->
-                            <% Object.keys(gameAll).forEach(function(item){ %>
+                            <% Object.keys(gamesAll).forEach(function(item){ %>
                             <option>
                                 <%- item %>
                             </option>
@@ -34,11 +34,11 @@
                         <p class="modal__subTitle" style="margin-bottom: 5px;">Ищу:</p>
                         
                         <!-- Выводим кол-во игроков в команде -->
-                        <% Object.keys(gameAll).forEach(function(item){ %>
+                        <% Object.keys(gamesAll).forEach(function(item){ %>
                         <div class="modal__usersMax" data-game="<%- item %>">
-                            <p class="modal__usersMax-item modal__usersMax-item_active" data-amount="<%- gameAll[item] %>" title="Команда из <%- gameAll[item] %> бро">
+                            <p class="modal__usersMax-item modal__usersMax-item_active" data-amount="<%- gamesAll[item]["maxUsersDefault"] %>" title="Команда из <%- gamesAll[item]["maxUsersDefault"] %> бро">
                                 Команду
-                                <span class="modal__usersMax-val">на <%- gameAll[item] %> человек</span>
+                                <span class="modal__usersMax-val">на <%- gamesAll[item]["maxUsersDefault"] %> человек</span>
                             </p>
 
                             <p class="modal__usersMax-item" data-amount="2" title="Поиск напарника">
