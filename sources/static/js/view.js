@@ -1,6 +1,21 @@
 $(document).ready(function () {
+    
+    // Подписываем на пространство имен "пользователи"
+    let nspAllUsers = io('/allUsers');
+    
+    // Обновляем блок со всеми пользователями
+    nspAllUsers.on("usersListUpdate", (data) => {        
+        let usersList = [];
+        $.each(data["usersList"], (item0)=> {
+            let user = data["usersList"][item0]["allUsersNow"];
+            usersList.push(user);
+        });
+        $(".s-preview__game_count").each(function(item1) {
+            $( this ).text( usersList[item1] );
+        });
+    });
+    
     // Блок функций
-
     // Увеличение картинки
     $(".s-preview__wrapZoom").click(function () {
         let img = $(this).children(".fancybox");

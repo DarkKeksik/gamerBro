@@ -5,8 +5,9 @@ let fs = require("fs"),
     io = require("socket.io").listen(server),
 
     // Все namespaces
-    nspChat = io.of("/chat");
-nspAll = [nspChat];
+    nspChat = io.of("/chat"),
+    nspAllUsers = io.of("/allUsers");
+nspAll = [nspChat, nspAllUsers];
 
 
 server.listen(3000, "172.31.45.177");
@@ -75,14 +76,14 @@ let gamesList = (socketInRooms) => {
             "allUsersNow": allUsersNow
         };
     });
-    
+
     return gamesAll;
 }
 
 // Главная страница
 app.get("/", (req, res) => {
     let gamesAll = gamesList(socketInRooms);
-    
+
     // Послать ответ
     res.render(`${__dirname}/sources/template/index`, {
         gamesAll: gamesAll
@@ -121,27 +122,27 @@ nspChat.on("connection", (socket) => {
 
     // Добавляем id сокета в масиив
     let socketInRooms_item, userInfo;
-    
+
     userInfoPromise.then((userInfo) => {
         let allUsersOnRoom = (elem, maxUsers) => {
             let maxUsersInside = maxUsers;
             let roomNameLast = findNameLastRoom(maxUsersInside);
-            
+
             // Имитируем событие
-            nspChat.to( roomNameLast ).emit("usersOnRoom", {
+            nspChat.to(roomNameLast).emit("usersOnRoom", {
                 usersOnRoom: elem["allRooms"][roomNameLast]["sockets"]
             });
         }
-        
+
         // При подключении нового клиента к чату, говорим об этом
         let tellAboutNewUser = (maxUsers) => {
-            
+
             let roomNameLast = findNameLastRoom(maxUsers);
-            nspChat.to( roomNameLast ).emit("connectNewUser", {
+            nspChat.to(roomNameLast).emit("connectNewUser", {
                 name: userInfo["name"]
             });
         };
-        
+
         // Находим все комнаты с определенным кол-вом пользователей 
         let findAllRooms = (elem, maxUsers) => {
             let resultArr = [];
@@ -153,14 +154,14 @@ nspChat.on("connection", (socket) => {
                     resultArr.push(item);
                 }
             });
-            
+
             return resultArr;
         }
 
 
         // Узнаем название последней созданной комнаты
         let findNameLastRoom = (maxUsers) => {
-            
+
             let roomsMaxUsersValid = [];
             socketInRooms.forEach((elemAllRooms) => {
                 let allRooms = Object.keys(elemAllRooms["allRooms"]);
@@ -174,9 +175,9 @@ nspChat.on("connection", (socket) => {
                     }
                 });
             });
-            
+
             // Из полученного массива комнат, получаем последний
-            let roomNameLastKey = roomsMaxUsersValid[Object.keys(roomsMaxUsersValid).length-1];
+            let roomNameLastKey = roomsMaxUsersValid[Object.keys(roomsMaxUsersValid).length - 1];
             return roomNameLastKey;
         }
 
@@ -185,7 +186,7 @@ nspChat.on("connection", (socket) => {
         let addNewUserOnRoom = (elem, maxUsers) => {
             let maxUsersInside = maxUsers;
             let roomNameLast = findNameLastRoom(maxUsersInside);
-            
+
             elem["allRooms"][roomNameLast]["sockets"][socket.client.id] = userInfo["name"];
             socket.join(roomNameLast);
         };
@@ -211,7 +212,7 @@ nspChat.on("connection", (socket) => {
 
         // Логика добавления в комнату
         socketInRooms.forEach((elem) => {
-            
+
             // Если название игры совпадает, то продолжаем
             if (elem["gameName"] == userInfo["gameName"]) {
                 socketInRooms_item = elem;
@@ -225,13 +226,13 @@ nspChat.on("connection", (socket) => {
                 // Если была созданна хоть одна любая комната
                 if (roomsCount > 0) {
                     roomNameLast = findNameLastRoom(userInfo["usersAmount"]);
-                    roomUsersMax = elem["allRooms"][roomNameLast]["maxUsers"];                    
+                    roomUsersMax = elem["allRooms"][roomNameLast]["maxUsers"];
                     roomsMaxUsersCheck = roomUsersMax != userInfo["usersAmount"];
                     roomUsersNow = Object.keys(elem["allRooms"][roomNameLast]["sockets"]).length;
                 }
-                
+
                 // Создаем новую комнату или добавляем
-                if ( (roomsCount == 0 || roomsMaxUsersCheck) || (roomUsersNow >= roomUsersMax) ) {
+                if ((roomsCount == 0 || roomsMaxUsersCheck) || (roomUsersNow >= roomUsersMax)) {
                     let roomName = createNameRoom(elem, userInfo["usersAmount"]);
                     createNewRoom(elem, roomName, userInfo["usersAmount"]);
                     addNewUserOnRoom(elem, userInfo["usersAmount"]);
@@ -244,28 +245,33 @@ nspChat.on("connection", (socket) => {
                 }
             }
         });
-        
+
+        // Показываем кол-во пользователей по играм
+        nspAllUsers.emit("usersListUpdate", {
+            usersList: gamesList(socketInRooms)
+        });
+
         // Отправляем сообщение всем пользователям в комнате
         let sentMessage = (socketId) => {
             // Сюда результат
             let roomName;
-            
+
             socketInRooms.forEach((elemAllRooms) => {
                 let allRooms = Object.keys(elemAllRooms["allRooms"]);
 
                 allRooms.forEach((elemNameRoom) => {
                     let itemRoom = elemAllRooms["allRooms"][elemNameRoom];
                     let itemRoomSockets = Object.keys(elemAllRooms["allRooms"][elemNameRoom]["sockets"]);
-                    
+
                     // Находим первую принадлежность сокета к комнате
                     itemRoomSockets.forEach((socketItem) => {
-                        if ( socketItem == socketId ) {
+                        if (socketItem == socketId) {
                             roomName = elemNameRoom;
                         }
                     });
                 });
             });
-            
+
             return roomName;
         }
 
@@ -273,17 +279,17 @@ nspChat.on("connection", (socket) => {
         socket.on("send mess", (data) => {
             let belongRoomName = sentMessage(socket.client.id);
             console.log("Id сокета ", socket.client.id);
-            console.log("Отправляем в комнату: ", belongRoomName );
-            
+            console.log("Отправляем в комнату: ", belongRoomName);
+
             let dataClear = protectedXXS(data);
-            
+
             // Сервер -> клиент
             nspChat.to(belongRoomName).emit("add mess", {
                 name: userInfo["name"],
                 msg: dataClear
             });
         });
-        
+
         socket.on("disconnect", (data) => {
 
             // Ликвидируем предателя
@@ -292,13 +298,13 @@ nspChat.on("connection", (socket) => {
                 let allRoomsOnGame = itemGame["allRooms"],
                     allRoomsOnGame_keys = Object.keys(allRoomsOnGame);
 
-                
+
                 // Проходим все комнаты для нахождения сокетов
                 allRoomsOnGame_keys.forEach((item) => {
                     let allRoomsOnGame_sockets = allRoomsOnGame[item]["sockets"];
                     let allRoomsOnGame_socketsKeys = Object.keys(allRoomsOnGame_sockets);
                     let allRoomsOnGame_socketPosition = allRoomsOnGame_socketsKeys.indexOf(socketId);
-                    
+
                     if (allRoomsOnGame_socketPosition > -1) {
                         // Удаляем из массива отключившийся сокет
                         delete(allRoomsOnGame_sockets[socketId]);
@@ -307,18 +313,24 @@ nspChat.on("connection", (socket) => {
                         nspChat.to(item).emit("disconnectUser", {
                             name: userInfo["name"]
                         });
-                        
+
                         // Удаляем из комнаты
                         socket.leave(item);
-                        
+
                         // Показываем остальным сокетам кто в комнате
-                        nspChat.to( item ).emit("usersOnRoom", {
+                        nspChat.to(item).emit("usersOnRoom", {
                             usersOnRoom: itemGame["allRooms"][item]["sockets"]
                         });
                     }
                 });
             });
-            console.log("Отключились ahegao");
+
+
+            // Показываем кол-во пользователей по играм
+            nspAllUsers.emit("usersListUpdate", {
+                usersList: gamesList(socketInRooms)
+            });
+            console.log("Отключились");
         });
 
 

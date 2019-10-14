@@ -76,9 +76,12 @@
                 <% Object.keys(gamesAll).forEach(function(item){ %>
                 <div class="s-preview__game s-preview__game_available">
                     <span class="s-preview__game_val"><%- item %></span>
-                    <span class="s-preview__game_allUsers">
-                        <span class="icon-users"></span><%- gamesAll[item]["allUsersNow"] %>
-                    </span>
+                    <p class="s-preview__game_allUsers">
+                        <span class="icon-users"></span>
+                        <span class="s-preview__game_count">
+                            <%- gamesAll[item]["allUsersNow"] %>
+                        </span>
+                    </p>
                 </div>
                 <% }); %>
                 <span class="s-preview__game s-preview__game_enable"> Pokemon Go </span>
