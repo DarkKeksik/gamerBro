@@ -4,7 +4,7 @@ $(() => {
     let nspGame;
 
     let startChat = new Promise((resolve, reject) => {
-        $("body").on("click", ".modal__submit", function () {
+        $("body").on("click", ".modal__submit", function (e) {
 
             let nick = $(".modal__input_name").val(),
                 game = $(".modal__select").val(),
@@ -33,12 +33,20 @@ $(() => {
 
 
     startChat.then((dataUser) => {
-        // Отсылаем сообщение пользователя
+        // Отсылаем сообщение пользователя при нажатии на энтер
+        // Функция enterKey в view.js (поправить позднее)
+        $("#chatArea").enterKey(function (e) {
+            $("#sendChatMessage").trigger("click");
+        });
+        
+        // Отсылаем сообщение пользователя при клике на блок
         $("body").on("click", ".modalChat__panelSub", function () {
             let userMsg = $(".modalChat__panelMes").val();
             
-            // Происходит событие
-            nspGame.emit("send mess", userMsg);
+            // Происходит событие если в сообщении что-либо было
+            if (userMsg != "") {
+                nspGame.emit("send mess", userMsg);
+            }
             
             // Чистим от прошлого сообщения
             $(".modalChat__panelMes").val("");
@@ -105,36 +113,6 @@ $(() => {
 
         $(".modalChat__Title_game").text(dataUser["gameName"]);
     });
-
-    function sendMesageByEnter(message) {
-
-        const sendMessageBtn = document.getElementById('sendChatMessage');
-
-            document.addEventListener('keypress', (event) => {
-                const ctrlKey = event.ctrlKey;
-                const keyName = event.code;
-
-                if (ctrlKey && keyName === 'Enter') {
-                    event.preventDefault();
-                    moveTextLine();
-                } else if (keyName === 'Enter') {
-                    sendMessageBtn.click();
-                }
-        });
-    }
-
-    function moveTextLine() {
-
-        const chatArea = document.getElementById('chatArea');
-        chatArea.addEventListener('keypress', (event) => {
-
-              document.execCommand('insertHTML', false, '<br><br>');
-              return false;
-          });
-    }
-
-    sendMesageByEnter();
-    // moveTextLine();
 
 
 });

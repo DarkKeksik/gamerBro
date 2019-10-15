@@ -15,6 +15,26 @@ $(document).ready(function () {
         });
     });
     
+    
+    // Плагин под нажатие клавиши на блоке
+    $.fn.enterKey = function (fnc) {
+        return this.each(function () {
+            $(this).keypress(function (ev) {
+                var keycode = (ev.keyCode ? ev.keyCode : ev.which);
+                if (keycode == '13') {
+                    fnc.call(this, ev);
+                }
+            })
+        })
+    }
+    // При нажатии на энтер по элементу модального окна, подключаемся к комнате
+    $(".modal__input").enterKey(function (e) {
+        $("#findRoom").trigger("click")
+        e.preventDefault();
+    });
+
+    
+    
     // Блок функций
     // Увеличение картинки
     $(".s-preview__wrapZoom").click(function () {
@@ -167,36 +187,4 @@ $(document).ready(function () {
         };
         $(".s-preview").css('background-image', 'url(' + arrBG[gameName] + ')');
     });
-
-    const modalCloseButton = document.getElementById('modalClose');
-    let modal = document.getElementsByClassName('modal')[0];
-
-    if (modalCloseButton) {
-        modalCloseButton.onclick = () => {
-            modal.style.display = 'none';
-        };
-        startFindRoomAndDeleteModal(modal);
-    }
-
-
-    function startFindRoomAndDeleteModal(modal) {
-
-        const startFindBtn = document.getElementById('findRoom');
-
-        if (startFindBtn) {
-            document.addEventListener('keypress', (event) => {
-                const keyName = event.code;
-
-                if (keyName === 'Enter') {
-                    event.preventDefault();
-
-                    startFindBtn.click();
-                    modal.remove();
-                }
-            });
-
-            return;
-        }
-    }
-
 });
