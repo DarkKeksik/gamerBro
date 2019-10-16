@@ -33,9 +33,6 @@ $(document).ready(function () {
         e.preventDefault();
     });
 
-    
-    
-    // Блок функций
     // Увеличение картинки
     $(".s-preview__wrapZoom").click(function () {
         let img = $(this).children(".fancybox");
@@ -55,14 +52,10 @@ $(document).ready(function () {
             }, 200);
         });
     });
-    // Блок функций, конец
-
-
-
-
+    
+    
 
     // Блоки обработки событий
-
     $("body").on("click", "#minimizeChat", function () {
         modalChatIsShow = $(".modalChat").is(":visible");
         $(this).parents(".modalChat").slideUp(function () {
@@ -72,15 +65,22 @@ $(document).ready(function () {
         });
     });
 
+    
     $("body").on("mousedown", ".button__search", function () {
         let gameChecked = $(".modal__select option:checked").val();
-        $(`.modal__usersMax[data-game`).hide();
+        $(`.modal__usersMax[data-game]`).hide();
         $(`.modal__usersMax[data-game='${gameChecked}']`).show();
         $(".modal").slideDown(function () {
             $(".modal__input_name").focus();
         });
     });
-
+    
+    // При нажатии на крестик, скрываем форму
+    $( document ).on("click", ".modal__close", function () {
+        $( this ).parents(".modal").hide();
+    });
+    
+    // При нажатии на esc сворачиваем модальное окно
     $("body").on("keydown", function (event) {
         let checkEsc = event.keyCode == 27,
             modalChatIsShow = $(".modalChat").is(":visible");
