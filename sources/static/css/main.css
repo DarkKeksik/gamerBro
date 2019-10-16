@@ -42,6 +42,46 @@ body {
 .usersBlock__item:last-of-type {
   margin-right: 0;
 }
+.alert {
+  max-width: 18.75rem;
+  margin-top: 1.25rem;
+  padding: .9375rem;
+  background-color: #fff;
+  border-radius: .225rem;
+  box-shadow: 0 0 .875rem #8a8a8a;
+  font-size: .875rem;
+}
+.alert__title {
+  margin-bottom: .3125rem;
+  padding: .3125rem;
+  text-align: center;
+  color: #ca6c5c;
+  font-weight: 700;
+  font-size: 1rem;
+}
+.alert__subTitle {
+  display: inline-block;
+  font-size: .6875rem;
+}
+.alert__panel {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  text-align: center;
+  column-gap: .125rem;
+}
+.alert__button {
+  padding: .625rem;
+  background-color: #404040;
+  color: white;
+  border-radius: .225rem;
+  cursor: pointer;
+  user-select: none;
+  transition-duration: .2s;
+}
+.alert__button:active {
+  background-color: #353535;
+  box-shadow: inset 0 0 .5rem #242424;
+}
 .menu {
   position: fixed;
   width: 100%;

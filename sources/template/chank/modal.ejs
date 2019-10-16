@@ -2,12 +2,12 @@
     <div class="modal__wrap">
         <div class="modal__bg"></div>
         <div class="modal__wrapText">
-           
+
             <!-- Панель для разных кнопок, свернуть, закрыть и т.д -->
             <div class="modal__panel">
                 <span class="modal__close icon-close" id="modalClose" title="Закрыть"></span>
             </div>
-            
+
             <form class="modal__form_1">
                 <p class="modal__title">Начинаем поиск</p>
 
@@ -30,15 +30,17 @@
                     </label>
 
                     <div>
-                       
+
                         <p class="modal__subTitle" style="margin-bottom: 5px;">Ищу:</p>
-                        
+
                         <!-- Выводим кол-во игроков в команде -->
                         <% Object.keys(gamesAll).forEach(function(item){ %>
                         <div class="modal__usersMax" data-game="<%- item %>">
-                            <p class="modal__usersMax-item modal__usersMax-item_active" data-amount="<%- gamesAll[item]["maxUsersDefault"] %>" title="Команда из <%- gamesAll[item]["maxUsersDefault"] %> бро">
+                            <p class="modal__usersMax-item modal__usersMax-item_active" data-amount="<%- gamesAll[item][" maxUsersDefault"] %>" title="Команда из <%- gamesAll[item]["maxUsersDefault"] %> игроков">
                                 Команду
-                                <span class="modal__usersMax-val">на <%- gamesAll[item]["maxUsersDefault"] %> человек</span>
+                                <span class="modal__usersMax-val">
+                                   на <%- gamesAll[item]["maxUsersDefault"] %> человек
+                                </span>
                             </p>
 
                             <p class="modal__usersMax-item" data-amount="2" title="Поиск напарника">
@@ -47,6 +49,18 @@
                             </p>
                         </div>
                         <% }); %>
+                    </div>
+                </div>
+
+                <div class="modal__block">
+                    <div class="alert">
+                        <p class="alert__title">Уйти из текущей команды?
+                            <span class="alert__subTitle">Возможно вы больше не встретитесь</span>
+                        </p>
+                        <p class="alert__panel">
+                            <span class="alert__button" data-choice="yes">Да</span>
+                            <span class="alert__button" data-choice="no">Нет</span>
+                        </p>
                     </div>
                 </div>
 

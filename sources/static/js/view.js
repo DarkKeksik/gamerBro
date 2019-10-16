@@ -111,6 +111,19 @@ $(document).ready(function () {
         $(this).parent().children(".modal__usersMax-item").removeClass(activeClass);
         $(this).addClass(activeClass);
     });
+    
+    // Если игрок начинает искать новую команду и не вышел со старой
+    $( document ).on("click", ".modal .alert__button", function() {
+        let choise = $( this ).data("choice");
+        
+        if ( choise == "no" ) {
+            $(".modalChat").slideDown(function() {
+                $(".modal__input").val("");
+                $(".alert").parent().hide();
+                $(".modal").hide();
+            });
+        }
+    });
 
 
     // Логика при скроле
@@ -173,7 +186,9 @@ $(document).ready(function () {
 
         $(`.modal__usersMax[data-game]`).hide();
         $(`.modal__usersMax[data-game='${gameName}']`).show();
-        $(".modal").slideDown();
+        $(".modal").slideDown(function() {
+            $(".modal__input:first").focus();
+        });
 
         let bgWay = "../static/img/bg/";
         let arrBG = {
