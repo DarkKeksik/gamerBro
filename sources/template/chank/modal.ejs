@@ -36,7 +36,7 @@
                         <!-- Выводим кол-во игроков в команде -->
                         <% Object.keys(gamesAll).forEach(function(item){ %>
                         <div class="modal__usersMax" data-game="<%- item %>">
-                            <p class="modal__usersMax-item modal__usersMax-item_active" data-amount="<%- gamesAll[item][" maxUsersDefault"] %>" title="Команда из <%- gamesAll[item]["maxUsersDefault"] %> игроков">
+                            <p class="modal__usersMax-item modal__usersMax-item_active" data-amount="<%- gamesAll[item]["maxUsersDefault"] %>" title="Команда из <%- gamesAll[item]["maxUsersDefault"] %> игроков">
                                 Команду
                                 <span class="modal__usersMax-val">
                                    на <%- gamesAll[item]["maxUsersDefault"] %> человек
