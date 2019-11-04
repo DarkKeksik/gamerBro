@@ -1,5 +1,6 @@
 let fs = require("fs"),
     express = require("express"),
+    cookieParser = require('cookie-parser'),
     app = express(),
     server = require("http").createServer(app),
     io = require("socket.io").listen(server),
@@ -12,6 +13,7 @@ nspAll = [nspChat, nspAllUsers];
 
 server.listen(3000, "172.31.45.177");
 app.set("view engine", "ejs");
+app.use(cookieParser());
 app.use("/static", express.static("./sources/static"));
 
 // Комнаты (правильная структура) 
@@ -55,22 +57,6 @@ let socketInRooms = [
 ];
 
 
-// Для проверки от xxs
-let protectedXXS = (string) => {
-    let htmlEscapes = {
-        '&': ' ',
-        '<': ' ',
-        '>': ' ',
-        '"': ' ',
-        "'": " "
-    };
-
-    return string.replace(/[&<>"']/g, (match) => {
-        return htmlEscapes[match];
-    });
-};
-
-
 // Cписок игр, макс. число игроков и кол-во всех пользователей в играх
 let gamesList = (socketInRooms) => {
     let gamesAll = {};
@@ -85,8 +71,7 @@ let gamesList = (socketInRooms) => {
         Object.keys(allRooms).forEach((item) => {
             allUsersNow += Object.keys(allRooms[item]["sockets"]).length;
         });
-//        console.log("В игре ", gameName, " пользователей: ", allUsersNow);
-
+        
         gamesAll[gameName] = {
             "maxUsersDefault": maxUsersDefault,
             "allUsersNow": allUsersNow
@@ -96,17 +81,45 @@ let gamesList = (socketInRooms) => {
     return gamesAll;
 }
 
-
 // Главная страница
 app.get("/", (req, res) => {
-    let gamesAll = gamesList(socketInRooms);
-
+    let userInRoom = req.cookies['room'];
+    
+    // Проверяем на другие открытые вкладки
+    let resData;
+    if (!userInRoom) {
+        resData = {
+            gamesAll: gamesList(socketInRooms),
+            inRoom: false
+        };
+    } else {
+        resData = {
+            gamesAll: gamesList(socketInRooms),
+            inRoom: true        
+        };
+    }
+    
     // Послать ответ
-    res.render(`${__dirname}/sources/template/index`, {
-        gamesAll: gamesAll
-    });
-    // let ip = req.connection.remoteAddress;
+    res.render(`${__dirname}/sources/template/index`, resData);    
+//    let ip = req.connection.remoteAddress;
 });
+
+
+// Функции
+// Для проверки от xxs
+let protectedXXS = (string) => {
+    let htmlEscapes = {
+        '&': ' ',
+        '<': ' ',
+        '>': ' ',
+        '"': ' ',
+        "'": " "
+    };
+
+    return string.replace(/[&<>"']/g, (match) => {
+        return htmlEscapes[match];
+    });
+};
 
 
 // Пользователи чата
