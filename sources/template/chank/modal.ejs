@@ -8,7 +8,8 @@
                 <span class="modal__close icon-close" id="modalClose" title="Закрыть"></span>
             </div>
 
-            <form class="modal__form_1">
+            <% if(!inRoom) { %>
+                <form class="modal__form_1">
                 <p class="modal__title">Начинаем поиск</p>
 
                 <div class="modal__block">
@@ -52,23 +53,26 @@
                     </div>
                 </div>
 
-                <div class="modal__block">
-                    <div class="alert">
-                        <p class="alert__title">Уйти из текущей команды?
-                            <span class="alert__subTitle">Возможно вы больше не встретитесь</span>
-                        </p>
-                        <p class="alert__panel">
-                            <span class="alert__button" data-choice="yes">Да</span>
-                            <span class="alert__button" data-choice="no">Нет</span>
-                        </p>
-                    </div>
-                </div>
-
                 <div class="modal__submitWrap">
                     <span class="modal__submit" id="findRoom">Начать поиск</span>
                 </div>
             </form>
-
+            <% } else { %>
+                <!-- Если пользователь уже находится в комнате -->
+                <form class="modal__form_2">
+                    <div class="modal__block">
+                        <div class="alert">
+                            <p class="alert__title">Вы уже состоите в команде, хотите начать поиск новой? 
+                                <span class="alert__subTitle">Возможно вы больше не встретитесь :(</span>
+                            </p>
+                            <p class="alert__panel">
+                                <span class="alert__button" data-choice="yes">Да</span>
+                                <span class="alert__button" data-choice="no">Нет (открыть чат)</span>
+                            </p>
+                        </div>
+                    </div>    
+                </form>
+            <% } %>
             <!-- Блок чата -->
             <div class="modal__form_2"></div>
         </div>

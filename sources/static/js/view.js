@@ -122,6 +122,8 @@ $(document).ready(function () {
                 $(".alert").parent().hide();
                 $(".modal").hide();
             });
+        } else {
+            document.cookie = "room=true; max-age=0";
         }
     });
 

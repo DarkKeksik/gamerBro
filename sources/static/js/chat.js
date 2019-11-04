@@ -19,6 +19,9 @@ $(() => {
                 gameName: game,
                 usersAmount: usersAmount
             };
+            
+            // Устанавливаем cookie при поиске комнаты
+            document.cookie = "room=true";
 
             // Отсылаем имя и название игры
             nspGame.emit("getInfoByUser", dataUser);
