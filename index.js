@@ -11,7 +11,7 @@ let fs = require("fs"),
 nspAll = [nspChat, nspAllUsers];
 
 
-server.listen(3000, "172.31.45.177");
+server.listen(80);
 app.set("view engine", "ejs");
 app.use(cookieParser());
 app.use("/static", express.static("./sources/static"));
