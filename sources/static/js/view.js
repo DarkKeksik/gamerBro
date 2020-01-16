@@ -29,8 +29,9 @@ $(document).ready(function () {
     }
     // При нажатии на энтер по элементу модального окна, подключаемся к комнате
     $(".modal__input").enterKey(function (e) {
-        $("#findRoom").trigger("click")
+        $("#findRoom").trigger("click");
         e.preventDefault();
+        return false;
     });
 
     // Увеличение картинки
@@ -70,6 +71,7 @@ $(document).ready(function () {
         let gameChecked = $(".modal__select option:checked").val();
         $(`.modal__usersMax[data-game]`).hide();
         $(`.modal__usersMax[data-game='${gameChecked}']`).show();
+        $(".modal__input_name").val("");
         $(".modal").slideDown(function () {
             $(".modal__input_name").focus();
         });
@@ -96,7 +98,7 @@ $(document).ready(function () {
         $(this).animate({
             bottom: "-100"
         }, "slow");
-        $(".modal, .modalChat").slideDown();
+        $(".modalChat .modal, .modalChat").slideDown();
     });
 
     $("body").on("change", ".modal__select", function () {
@@ -113,19 +115,19 @@ $(document).ready(function () {
     });
     
     // Если игрок начинает искать новую команду и не вышел со старой
-    $( document ).on("click", ".modal .alert__button", function() {
-        let choise = $( this ).data("choice");
-        
-        if ( choise == "no" ) {
-            $(".modalChat").slideDown(function() {
-                $(".modal__input").val("");
-                $(".alert").parent().hide();
-                $(".modal").hide();
-            });
-        } else {
-            document.cookie = "room=true; max-age=0";
-        }
-    });
+//    $( document ).on("click", ".modal .alert__button", function() {
+//        let choise = $( this ).data("choice");
+//        
+//        if ( choise == "no" ) {
+//            $(".modalChat").slideDown(function() {
+//                $(".modal__input").val("");
+//                $(".alert").parent().hide();
+//                $(".modal").hide();
+//            });
+//        } else {
+//            document.cookie = "room=true; max-age=0";
+//        }
+//    });
 
 
     // Логика при скроле
@@ -188,6 +190,7 @@ $(document).ready(function () {
 
         $(`.modal__usersMax[data-game]`).hide();
         $(`.modal__usersMax[data-game='${gameName}']`).show();
+        $(".modal__input:first").val("");
         $(".modal").slideDown(function() {
             $(".modal__input:first").focus();
         });
