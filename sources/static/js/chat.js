@@ -20,13 +20,12 @@ $(() => {
                 usersAmount: usersAmount
             };
             
-            // Устанавливаем cookie при поиске комнаты
-            document.cookie = "room=true";
-
             // Отсылаем имя и название игры
             nspGame.emit("getInfoByUser", dataUser);
             $(".modalChat").slideDown(function() {
                 $(".modalChat__panelMes").focus();
+//                // Устанавливаем cookie при поиске комнаты
+//                document.cookie = "room=true";
             });
             
             $( this ).parents(".modal").slideUp();
@@ -40,6 +39,7 @@ $(() => {
         // Функция enterKey в view.js (поправить позднее)
         $("#chatArea").enterKey(function (e) {
             $("#sendChatMessage").trigger("click");
+            e.preventDefault();
         });
         
         // Отсылаем сообщение пользователя при клике на блок
